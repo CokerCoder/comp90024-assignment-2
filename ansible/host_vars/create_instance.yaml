@@ -1,0 +1,68 @@
+# Common vars
+availability_zone: melbourne-qh2-uom
+instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
+instance_key_name: group26
+instance_flavor: uom.mse.1c4g
+
+# Security group
+security_groups:
+  - name: instance1-security-group
+    description: "security group for instance1 server"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: instance2-security-group
+    description: "security group for instance2 server"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: instance3-security-group
+    description: "security group for instance3 server"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+  - name: instance4-security-group
+    description: "security group for instance4 server"
+    protocol: tcp
+    port_range_min: 1
+    port_range_max: 65535
+    remote_ip_prefix: 0.0.0.0/0
+
+# Instance
+instances:
+  - name: instance1
+    security_groups: instance1-security-group
+    volume_ids: '{{ instance1_volumes|default([]) }}'
+    volumes:
+      - vol_name: volume_db1
+        vol_size: 80
+        device: /dev/vdb
+        mountpoint: /data
+  - name: instance2
+    security_groups: instance2-security-group
+    volume_ids: '{{ instance2_volumes|default([]) }}'
+    volumes:
+      - vol_name: volume_db2
+        vol_size: 80
+        device: /dev/vdb
+        mountpoint: /data
+  - name: instance3
+    security_groups: instance3-security-group
+    volume_ids: '{{ instance3_volumes|default([]) }}'
+    volumes:
+      - vol_name: volume_db3
+        vol_size: 80
+        device: /dev/vdb
+        mountpoint: /data
+  - name: instance4
+    security_groups: instance4-security-group
+    volume_ids: '{{ instance4_volumes|default([]) }}'
+    volumes:
+      - vol_name: volume_ml
+        vol_size: 10
+        device: /dev/vdb
+        mountpoint: /data
+
