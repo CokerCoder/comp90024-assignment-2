@@ -1,8 +1,9 @@
 # Common vars
 availability_zone: melbourne-qh2-uom
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
-instance_key_name: group26
+instance_key_name: team26
 instance_flavor: uom.mse.1c4g
+#project_working_directory: /home/haoyuany/ccc-p2
 
 # Security group
 security_groups:
@@ -31,38 +32,39 @@ security_groups:
     port_range_max: 65535
     remote_ip_prefix: 0.0.0.0/0
 
+volumes:
+  - vol_name: instance1-volume
+    vol_size: 80
+    device: /dev/vdb
+    mountpoint: /home/ubuntu/COMP90024
+  - vol_name: instance2-volume
+    vol_size: 60
+    device: /dev/vdb
+    mountpoint: /data
+  - vol_name: instance3-volume
+    vol_size: 60
+    device: /dev/vdb
+    mountpoint: /data
+  - vol_name: instance4-volume
+    vol_size: 60
+    device: /dev/vdb
+    mountpoint: /data
+
 # Instance
 instances:
   - name: instance1
     security_groups: instance1-security-group
-    volume_ids: '{{ instance1_volumes|default([]) }}'
-    volumes:
-      - vol_name: volume_db1
-        vol_size: 80
-        device: /dev/vdb
-        mountpoint: /data
+    volume_ids: '{ instance1_volumes|default([]) }'
+    volumes: ['instance1-volume']
   - name: instance2
     security_groups: instance2-security-group
-    volume_ids: '{{ instance2_volumes|default([]) }}'
-    volumes:
-      - vol_name: volume_db2
-        vol_size: 80
-        device: /dev/vdb
-        mountpoint: /data
+    volume_ids: '{ instance2_volumes|default([]) }'
+    volumes: ['instance2-volume']
   - name: instance3
     security_groups: instance3-security-group
-    volume_ids: '{{ instance3_volumes|default([]) }}'
-    volumes:
-      - vol_name: volume_db3
-        vol_size: 80
-        device: /dev/vdb
-        mountpoint: /data
+    volume_ids: '{ instance3_volumes|default([]) }'
+    volumes: ['instance3-volume']
   - name: instance4
     security_groups: instance4-security-group
-    volume_ids: '{{ instance4_volumes|default([]) }}'
-    volumes:
-      - vol_name: volume_ml
-        vol_size: 10
-        device: /dev/vdb
-        mountpoint: /data
-
+    volume_ids: '{ instance4_volumes|default([]) }'
+    volumes: ['instance4-volume']

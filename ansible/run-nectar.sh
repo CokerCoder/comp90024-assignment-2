@@ -1,2 +1,2 @@
-#!/bin/bash
-./grp-26-openrc.sh; ansible-playbook --ask-become-pass create_instance.yaml
+#!/bin/zsh
+./grp-26-openrc.sh; ansible-playbook create_instance.yaml
