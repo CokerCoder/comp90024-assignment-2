@@ -19,24 +19,27 @@ api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 # for tweet in public_tweets:
 #     print (tweet.text)
 
-# crawl by the loctaion from newest time (only one time, duplicate problem)
-# def crawl_by_loction():
-#     cricTweet = tweepy.Cursor(api.search, q='cricket', geocode="-37.999250,144.997395,57km", lang='en').items(5)    
-#     for tweet in cricTweet:
-#     print("Created_time: ", tweet.created_at)
-#     print("text: ", tweet.text)
-#     print("location: ", tweet.user.location)
-#     #print(tweet)
+#crawl by the loctaion from newest time (only one time, duplicate problem)
+def crawl_by_loction():
+        # q is the key word of text
+        tweets = tweepy.Cursor(api.search, q='food', geocode="-37.999250,144.997395,57km", lang='en').items(5)    
+        for tweet in tweets:
+                print("Created_time: ", tweet.created_at)
+                print("text: ", tweet.text)
+                print("location: ", tweet.user.location)
+                #print(tweet)
 
+crawl_by_loction()
 
 # crawl by time: 
 # def crawl_by_time():
-tweets=tweepy.Cursor(api.search_full_archive,environment_name='**ENV NAME FROM API**', fromDate="202101010000", toDate="202103010000", geocode="-37.999250,144.997395,57km").items(2)
-for tweet in tweets:
-        print("Created_time: ", tweet.created_at)
-        print("text: ", tweet.text)
-        print("location: ", tweet.user.location)
-        #print(tweet)
+# tweets=tweepy.Cursor(api.search_full_archive,environment_name='**ENV NAME FROM API**', fromDate="202101010000", toDate="202103010000", geocode="-37.999250,144.997395,57km").items(2)
+# tweets = tweepy.Cursor(api.search, q='#contentmarketing', count=20000, lang='en', since='2021-01-20').items(2)
+# for tweet in tweets:
+#         print("Created_time: ", tweet.created_at)
+#         print("text: ", tweet.text)
+#         print("location: ", tweet.user.location)
+#         #print(tweet)
 
 
 # crawl by real time 
