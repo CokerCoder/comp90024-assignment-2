@@ -17,8 +17,13 @@
     group: ubuntu
     mode: 0644
 
-- name: clone source code from git
-  git:
-    repo: git@github.com:yunfeijing/ccc-p2.git
-    key_file: /home/ubuntu/.ssh/ccc_key
-    dest: '{{ remote_working_directory }}'
+- name: Creates remote working directory
+  file:
+    path: '{{ remote_working_directory }}'
+    state: directory
+    mode: 0600
+
+- name: git clone
+  shell: git clone git@github.com:yunfeijing/ccc-p2.git --config core.sshCommand="ssh -i /home/ubuntu/.ssh/ccc_key"
+  args:
+    chdir: '{{ remote_working_directory }}'
