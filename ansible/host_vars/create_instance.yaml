@@ -35,7 +35,7 @@ volumes:
   - vol_name: instance1-volume
     vol_size: 100
     device: /dev/vdb
-    mountpoint: /home/ubuntu/COMP90024
+    mountpoint: /data
   - vol_name: instance2-volume
     vol_size: 100
     device: /dev/vdb
