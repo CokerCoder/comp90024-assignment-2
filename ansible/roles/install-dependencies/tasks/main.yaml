@@ -1,0 +1,15 @@
+---
+
+- name: Update apt
+  become: yes
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: install dependencies
+  become: yes
+  apt:
+    name: ['vim', 'git', 'python-apt','python-pip', 'python3-apt', 'python3-pip','xfsprogs','apt-transport-https','curl','python-setuptools']
+    state: latest
+    install_recommends: no
+    update_cache: yes

@@ -1,0 +1,24 @@
+---
+
+- name: copy github ssh key
+  copy:
+    src: "config/ccc_key.pem"
+    dest: /home/ubuntu/.ssh/ccc_key
+    owner: ubuntu
+    group: ubuntu
+    mode: 0600
+
+
+- name: configure ssh to use ansible key for github.com
+  template:
+    src: "config/ssh_config"
+    dest: /home/ubuntu/.ssh/config
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
+
+- name: clone source code from git
+  git:
+    repo: git@github.com:yunfeijing/ccc-p2.git
+    key_file: /home/ubuntu/.ssh/ccc_key
+    dest: '{{ remote_working_directory }}'

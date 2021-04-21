@@ -1,0 +1,8 @@
+---
+- name: add ssh key
+  copy:
+    src: "config/team26.pem"
+    dest: /home/ubuntu/.ssh/team26.pem
+#    owner: ubuntu
+#    group: ubuntu
+    mode: 0600
