@@ -2,8 +2,8 @@
 
 - name: copy github ssh key
   copy:
-    src: "config/ccc_key.pem"
-    dest: /home/ubuntu/.ssh/ccc_key
+    src: "config/git_key.pem"
+    dest: /home/ubuntu/.ssh/git_key
     owner: ubuntu
     group: ubuntu
     mode: 0600
