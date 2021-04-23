@@ -1,22 +1,30 @@
 ---
+# Ubuntu16的软件地址
 - name: Add specified repository into sources list
   become: yes
   ansible.builtin.apt_repository:
     repo: deb http://security.ubuntu.com/ubuntu xenial-security main
     state: present
 
-# - name: Update apt packages
-#   become: true
-#   apt:
-#     update_cache: yes
+# Ubuntu18的软件地址
+- name: Add specified repository into sources list
+  become: yes
+  ansible.builtin.apt_repository:
+    repo: deb http://cz.archive.ubuntu.com/ubuntu bionic main 
+    state: present
 
-# - name: Install couchdb dependencies
-#   become: yes
-#   apt:
-#     name: ['libicu55', 'libcurl3', 'libssl1.0.0']
-#     state: latest
-#     install_recommends: no 
-#     update_cache: yes
+- name: Update apt packages
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install couchdb dependencies
+  become: yes
+  apt:
+    name: ['libicu55', 'libcurl3', 'libssl1.0.0', 'libffi6']
+    state: latest
+    install_recommends: no 
+    update_cache: yes
 
 # - name: Install couchdb dependencies
 #   become: yes
@@ -30,6 +38,14 @@
   become: yes
   apt:
     deb="/home/ubuntu/COMP90024/ccc-p2/ansible/couch-libmozjs185.deb"
+  
+- name: Install couchdb dependencies
+  become: yes
+  apt:
+    name: ['curl'] # 安装curl会和上边的libcurl3冲突，但是神奇的是这两个都需要，网上应该有一些解决办法，就差这一步了
+    state: latest
+    install_recommends: no 
+    update_cache: yes
   
 - name: curl command
   become: yes
