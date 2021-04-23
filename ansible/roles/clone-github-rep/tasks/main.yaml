@@ -17,6 +17,11 @@
     group: ubuntu
     mode: 0644
 
+- name: Delete remote working directory if exists
+  file:
+    state: absent
+    path: '{{ remote_working_directory }}'
+
 - name: Creates remote working directory
   file:
     path: '{{ remote_working_directory }}'

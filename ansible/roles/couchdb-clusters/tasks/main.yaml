@@ -29,7 +29,7 @@
 - name: Install couchdb dependencies
   become: yes
   apt:
-    deb: couch-libmozjs185.deb
+    deb="/home/ubuntu/COMP90024/ccc-p2/ansible/couch-libmozjs185.deb"
   
 - name: curl command
   become: yes
