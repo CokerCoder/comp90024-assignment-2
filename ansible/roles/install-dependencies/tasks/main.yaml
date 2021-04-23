@@ -13,3 +13,6 @@
     state: latest
     install_recommends: no
     update_cache: yes
+
+# 先装上暂时没用
+- include_tasks: docker.yaml
