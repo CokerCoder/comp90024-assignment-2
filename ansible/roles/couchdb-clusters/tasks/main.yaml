@@ -30,6 +30,14 @@
     name: couchdb
     state: latest
     update_cache: yes
+  register: couchdb_install
+
+- name: stop couchdb
+  become: yes
+  service:
+    name: couchdb
+    state: stopped
+  when: couchdb_install.changed
 
 - name: change owner of couchdb executable
   file:
@@ -40,26 +48,47 @@
     path: /usr/bin/couchdb
   when: couchdb_install.changed
 
-- name: copy the couchdb folder to /usr/local/lib/
-  become: yes
-  shell: cp -r /opt/couchdb /usr/local/lib
-
-- name: apply the cluster configuration
-  become: yes
-  copy: src=/home/ubuntu/COMP90024/ccc-p2/ansible/roles/couchdb-clusters/cluster.local.ini dest=/usr/local/lib/couchdb/etc/local.ini
-  when: configure_cluster == True
-
-- name: install the sysv script to run CouchDB as a service
-  become: yes
-  copy: src=/home/ubuntu/COMP90024/ccc-p2/ansible/roles/couchdb-clusters/couchdb dest=/etc/init.d/couchdb mode=0755
-
-- name: start CouchDB and ensure it is enabled at boot time
-  become: yes
-  service: name=couchdb state=started enabled=yes
-
-- name: check that we can ping CouchDB on all its ports
-  become: yes
-  uri: url=http://127.0.0.1:{{ item }}
+- name: secure couchdb installation
+  file:
+    state: directory
+    mode: 0770
+    owner: couchdb
+    group: couchdb
+    path: "{{ item }}"
   with_items:
-  - 5986
-  - 5984
+    - /usr/lib/couchdb
+    - /usr/share/couchdb
+    - /etc/couchdb
+  when: couchdb_install.changed
+
+- name: start couchdb
+  become: yes
+  service:
+    name: couchdb
+    state: started
+  when: couchdb_install.changed
+
+  # couchdb 安装位置
+# - name: copy the couchdb folder to /usr/local/lib/
+#   become: yes
+#   shell: cp -r /opt/couchdb /usr/local/lib
+
+# - name: apply the cluster configuration
+#   become: yes
+#   copy: src=/home/ubuntu/COMP90024/ccc-p2/ansible/roles/couchdb-clusters/cluster.local.ini dest=/usr/local/lib/couchdb/etc/local.ini
+#   when: configure_cluster == True
+
+# - name: install the sysv script to run CouchDB as a service
+#   become: yes
+#   copy: src=/home/ubuntu/COMP90024/ccc-p2/ansible/roles/couchdb-clusters/couchdb dest=/etc/init.d/couchdb mode=0755
+
+# - name: start CouchDB and ensure it is enabled at boot time
+#   become: yes
+#   service: name=couchdb state=started enabled=yes
+
+# - name: check that we can ping CouchDB on all its ports
+#   become: yes
+#   uri: url=http://127.0.0.1:{{ item }}
+#   with_items:
+#   - 5986
+#   - 5984
