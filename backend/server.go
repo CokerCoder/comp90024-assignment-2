@@ -1,67 +1,70 @@
 package main
 
 import (
+	"strconv"
 	"context"
+	"encoding/json"
+    "os"
 	"fmt"
 	"net/http"
-
 	"github.com/labstack/echo/v4"
 
 	_ "github.com/go-kivik/couchdb/v4"
 	kivik "github.com/go-kivik/kivik/v4"
 )
 
-// e.GET("/users/:id", getUser)
-func getUser(c echo.Context) error {
-	// User ID from path `users/:id`
-	id := c.Param("id")
-	return c.String(http.StatusOK, id)
+type Configuration struct {  
+	DB_USERNAME string  
+	DB_PASSWORD string  
+	DB_PORT     string  
+	DB_HOST     string  
+	DB_NAME     string
 }
 
-// e.GET("/raw", getRawData)
+// Store the database as a global variable
+var db *kivik.DB
+
+func welcome(c echo.Context) error {
+	return c.String(http.StatusOK, "Hello, World!")
+}
+
 func getRawData(c echo.Context) error {
-	return c.String(http.StatusOK, "ok")
+	docs, err := db.AllDocs(context.TODO())
+	if err != nil {
+		panic(err)
+	}
+	// return c.String(http.StatusOK, strconv.Itoa(docs.TotalRows()))
 }
 
 func main() {
-	e := echo.New()
+	// Read config file
+	file, _ := os.Open("config.json")
+	defer file.Close()
+	decoder := json.NewDecoder(file)
+	configuration := Configuration{}
+	err := decoder.Decode(&configuration)
+	if err != nil {
+		fmt.Println("error:", err)
+	}
 
 	// Establish connection with couchdb
-	client, err := kivik.New("couch", "http://admin:admin@172.26.132.83:5984/")
+	client, err := kivik.New("couch", fmt.Sprintf("http://%s:%s@%s:%s/", configuration.DB_USERNAME, configuration.DB_PASSWORD, configuration.DB_HOST, configuration.DB_PORT))
 	if err != nil {
 		panic(err)
 	}
-
-	// Retrieve all databases
-	all_db, _ := client.AllDBs(context.TODO())
-	fmt.Println(all_db)
-
-	// Create a database named test
-	client.CreateDB(context.TODO(), "animals")
 
 	// Get the test database
-	animal_db := client.DB("animals")
+	db = client.DB(configuration.DB_NAME)
 
-	// Insert some random data
-	doc := map[string]interface{}{
-		"_id":      "cow",
-		"feet":     4,
-		"greeting": "moo",
-	}
-
-	rev, err := animal_db.Put(context.TODO(), "cow", doc)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Cow inserted with revision %s\n", rev)
+	e := echo.New()
 
 	// Routers
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
-	e.GET("/users/:id", getUser)
+	e.GET("/", welcome)
 	e.GET("/raw", getRawData)
+	e.GET("/test", func(c echo.Context) error {
+		return c.String(http.StatusOK, "test")
+	})
 
-	// Starting server
-	e.Logger.Fatal(e.Start(":1323"))
+	// Starting server at port 1234
+	e.Logger.Fatal(e.Start(":1234"))
 }
