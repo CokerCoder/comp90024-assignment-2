@@ -1,13 +1,43 @@
 #############################################
 #                 CouchDB                   #
 #############################################
-couchdb_version: 2.3.0
-couchdb_config_path: /home/ubuntu/couchdb/etc
-couchdb_share: 4
-couchdb_replica: 3
-cluster_cookie: 'hello'
-cluster_communication_port_min: 9100
-cluster_communication_port_max: 9102
+---
+couchdb_settings:
+  httpd:
+    port: "5984"
+    bind_address: "0.0.0.0"
+
+couchdb_admins:
+  admin: P4s$w0rd
+
+couchdb_users:
+  user_with_roles:
+    password: password123
+    roles:
+      - developer
+      - manager
+  user_without_roles:
+    password: password456
+
+couchdb_databases:
+  database_without_security: {}
+  database_with_admins:
+    admins:
+      names:
+        - user_without_roles
+      roles:
+        - manager
+  database_with_members:
+    members:
+      roles:
+        - developer
+
+couchdb_replication:
+  - source: my_database
+    target: http://backup.example.com:5984/my_database
+    continuous: yes
+
+couchdb_url: "http://localhost:5984"
 
 #############################################
 #                  Docker                   #
