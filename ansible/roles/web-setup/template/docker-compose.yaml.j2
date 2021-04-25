@@ -11,16 +11,4 @@ services:
         ports:
             - {{ APP_SERVER_PORT }}:{{ APP_SERVER_PORT }}
         command: npm run start
-
-    frontend:
-        build: ./frontend
-        image: frontend
-        environment:
-            REACT_APP_PORT: {{ REACT_APP_PORT }}
-        ports:
-            - 80:{{ REACT_APP_PORT }}
-        stdin_open: true
-        links:
-            - backend
-        command: serve -p 4000 -s .
         
