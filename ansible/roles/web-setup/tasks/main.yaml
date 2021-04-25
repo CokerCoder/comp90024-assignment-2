@@ -26,7 +26,7 @@
 - name: Run docker compose
   become: yes
   docker_compose:
-    project_src: "~/COMP90024/ccc-p2/web/"
+    project_src: "/home/ubuntu/COMP90024/ccc-p2/web/"
     pull: false
     build: yes
     state: present
