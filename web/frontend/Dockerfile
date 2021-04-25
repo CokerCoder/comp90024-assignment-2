@@ -1,19 +1,21 @@
 FROM node:16.0.0-alpine as builder
 
 WORKDIR /app
-COPY . .
+
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json ./
-COPY package-lock.json ./
+COPY ["package.json", "package-lock.json*", "./"]
+
 RUN npm install --silent
 RUN npm run build
 
+COPY . .
 
-FROM node:16.0.0-alpine
-RUN npm run start
-WORKDIR /app
-COPY --from=builder /app/build .
-EXPOSE 4000
-CMD ["serve", "-p","4000","-s","."]
+
+# FROM node:16.0.0-alpine
+# RUN npm run start
+# WORKDIR /app
+# COPY --from=builder /app/build .
+# EXPOSE 4000
+# CMD ["serve", "-p","4000","-s","."]
 
