@@ -2,7 +2,6 @@
 availability_zone: melbourne-qh2-uom
 instance_image: f8b79936-6616-4a22-b55d-0d0a1d27bceb
 instance_key_name: team26
-#project_working_directory: /home/haoyuany/ccc-p2
 
 # Security group
 security_groups:

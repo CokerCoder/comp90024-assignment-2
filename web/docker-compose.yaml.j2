@@ -4,7 +4,7 @@ services:
 
     backend:
         build: ./backend
-        image: ccc-p2/backend
+        image: backend
         environment:
             APP_SERVER_PORT: {{ APP_SERVER_PORT }}
             COUCHDB_HOST: {{ COUCHDB_HOST }}
@@ -14,7 +14,7 @@ services:
 
     frontend:
         build: ./frontend
-        image: ccc-p2/frontend
+        image: frontend
         environment:
             REACT_APP_PORT: {{ REACT_APP_PORT }}
         ports:

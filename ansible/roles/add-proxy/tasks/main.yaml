@@ -1,6 +1,6 @@
 ---
 
-# add proxy to allow  instances to be accessible externally
+# add proxy to allow instances to be accessible externally
 - name: add proxy to /etc/environment
   become: yes
   blockinfile:

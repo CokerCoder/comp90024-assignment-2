@@ -5,7 +5,6 @@ git_rep: /home/ubuntu/COMP90024/ccc-p2
 ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
 ansible_ssh_private_key_file: "config/mrc_key.pem"
 
-### Couchdb ###
 couchdb_image: ibmcom/couchdb3:latest
 couchdb_user: admin
 couchdb_pass: admin
@@ -15,7 +14,6 @@ couchdb_uuid: "a192aeb9904e6590849337933b001159"
 cluster_name: "_cluster_setup"
 couchdb_container_name: "couchdb_"
 couchdb_port: 5984
-#couchdb_db_name: "live-tweets"
 
 proxy_env:
   HTTP_PROXY: http://wwwproxy.unimelb.edu.au:8000/
