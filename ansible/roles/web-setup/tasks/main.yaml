@@ -18,7 +18,7 @@
   become: yes
   template:
     src: "../template/docker-compose.yaml.j2"
-    dest: "~/COMP90024/ccc-p2/web/docker-compose.yaml"
+    dest: "/home/ubuntu/COMP90024/ccc-p2/web/docker-compose.yaml"
     owner: "ubuntu"
     group: "ubuntu"
 
