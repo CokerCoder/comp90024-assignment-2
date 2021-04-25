@@ -14,12 +14,10 @@ COPY . .
 RUN npm run build
 
 
-
-
-# FROM node:16.0.0-alpine
-# RUN npm run start
-# WORKDIR /app
-# COPY --from=builder /app/build .
-# EXPOSE 4000
-# CMD ["serve", "-p","4000","-s","."]
+FROM node:16.0.0-alpine
+RUN npm run start
+WORKDIR /app
+COPY --from=builder /app/build .
+EXPOSE 4000
+CMD ["serve", "-p","4000","-s","."]
 
