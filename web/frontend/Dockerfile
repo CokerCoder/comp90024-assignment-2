@@ -8,9 +8,12 @@ COPY ["package.json", "package-lock.json*", "./"]
 
 RUN npm install --silent
 RUN npm install react-scripts@4.0.3 -g --silent
-RUN npm run build
 
 COPY . .
+
+RUN npm run build
+
+
 
 
 # FROM node:16.0.0-alpine
