@@ -18,7 +18,7 @@
     "typescript": "^4.2.4",
     "web-vitals": "^1.1.1"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://backend:8000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
