@@ -22,5 +22,5 @@ api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 # target database object
 server = couchdb.Server('http://admin:admin@172.26.132.83:5984/')
 
-database = crawl_util.find_or_create_db(server, 'tweet_docs_instance')
+database = crawl_util.find_or_create_db(server, 'tweet_docs_location')
 crawl_util.crawl_by_loction(api,database,4300000)

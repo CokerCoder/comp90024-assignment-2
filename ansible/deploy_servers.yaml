@@ -13,18 +13,18 @@
 #   roles:
 #     - role: setup-couchdb-clusters
 
-# - hosts: dbServers
-#   vars_files:
-#     - host_vars/config.yaml
-#   gather_facts: true
-#   roles:
-#     - role: clone-github-rep
-#     - role: crawler-setup
-
-- hosts: instance4
+- hosts: dbServers
   vars_files:
     - host_vars/config.yaml
   gather_facts: true
   roles:
     - role: clone-github-rep
-    - role: web-setup
+    - role: crawler-setup
+
+# - hosts: instance4
+#   vars_files:
+#     - host_vars/config.yaml
+#   gather_facts: true
+#   roles:
+#     - role: clone-github-rep
+#     - role: web-setup
