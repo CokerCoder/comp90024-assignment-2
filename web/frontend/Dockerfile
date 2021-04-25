@@ -1,4 +1,3 @@
-# build environment
 FROM node:16.0.0-alpine as builder
 
 WORKDIR /app
@@ -15,11 +14,11 @@ COPY . .
 RUN npm run build
 
 
-# production environment
-FROM nginx:stable-alpine
-
-COPY --from=builder /app/build /usr/share/nginx/html
-
+FROM node:16.0.0-alpine
+RUN npm install -g serve
+WORKDIR /app
+COPY --from=builder /app/build .
 EXPOSE 4000
 
-CMD ["nginx", "-g", "daemon off;"]    
+CMD ["serve", "-s","build","-l","4000"]
+
