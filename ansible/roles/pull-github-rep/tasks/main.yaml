@@ -1,6 +1,6 @@
 ---
 
 - name: git pull
-  shell: git pull
+  shell: git reset --hard HEAD && git pull
   args:
     chdir: '{{ git_rep }}'
