@@ -1,4 +1,4 @@
-FROM node:13.12.0-alpine as builder
+FROM node:16.0.0-alpine as builder
 
 WORKDIR /app
 COPY . .
@@ -6,11 +6,11 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm cache clean --force && npm install --silent
+RUN npm install --silent
 RUN npm run build
 
 
-FROM node:13.12.0-alpine
+FROM node:16.0.0-alpine
 RUN npm run start
 WORKDIR /app
 COPY --from=builder /app/build .
