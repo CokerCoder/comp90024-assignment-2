@@ -3,14 +3,14 @@
 - name: Add specified repository into sources list
   become: yes
   ansible.builtin.apt_repository:
-    repo: deb http://cz.archive.ubuntu.com/ubuntu focal main 
+    repo: deb http://cz.archive.ubuntu.com/ubuntu focal main
     state: present
 
 - name: Update apt packages
   become: true
   apt:
     update_cache: yes
-  
+
 - name: curl command
   become: yes
   apt_key:
@@ -76,7 +76,7 @@
   service:
     name: couchdb
     state: started
-  # when: couchdb_install.changed
+# when: couchdb_install.changed
 
 - name: check couchdb connection
   become: yes

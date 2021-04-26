@@ -1,5 +1,4 @@
-# 先在所有instance都安装couchdb
-- hosts: instances
+- hosts: dbServers
   vars_files:
     - host_vars/config.yaml
     - host_vars/create_instance.yaml
@@ -7,4 +6,12 @@
   gather_facts: true
   roles:
     - role: install-couchdb
+
+- hosts: dbMaster
+  vars_files:
+    - host_vars/config.yaml
+    - host_vars/create_instance.yaml
+    - host_vars/deploy_servers.yaml
+  gather_facts: true
+  roles:
     - role: setup-couchdb-clusters

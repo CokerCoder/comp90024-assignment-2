@@ -9,7 +9,7 @@ couchdb_settings:
     bind_address: "0.0.0.0"
 
 couchdb_admins:
-  admin: P4s$w0rd
+  admin: admin
 
 couchdb_users:
   user_with_roles:
@@ -39,16 +39,12 @@ couchdb_replication:
     continuous: yes
 
 couchdb_url: "http://localhost:5984"
+##################################################
 
-
-couchdb_image: ibmcom/couchdb3:latest
 couchdb_user: admin
 couchdb_pass: admin
-couchdb_VERSION: '3.0.0'
-couchdb_cookie: 'a192aeb9904e6590849337933b000c99'
-couchdb_uuid: 'a192aeb9904e6590849337933b001159'
-cluster_name: '_cluster_setup'
-couchdb_container_name: 'couchdb_'
+couchdb_VERSION: "3.1.1"
+cluster_name: "_cluster_setup"
 couchdb_port: 5984
 couchdb_db_name: "live-tweets"
 
