@@ -33,19 +33,19 @@ security_groups:
 
 volumes:
   - vol_name: instance1-volume
-    vol_size: 100
+    vol_size: 150
     device: /dev/vdb
     mountpoint: /data
   - vol_name: instance2-volume
-    vol_size: 100
+    vol_size: 150
     device: /dev/vdb
     mountpoint: /data
   - vol_name: instance3-volume
-    vol_size: 100
+    vol_size: 150
     device: /dev/vdb
     mountpoint: /data
   - vol_name: instance4-volume
-    vol_size: 80
+    vol_size: 50
     device: /dev/vdb
     mountpoint: /data
 
@@ -54,20 +54,20 @@ instances:
   - name: instance1
     instance_flavor: uom.mse.2c9g
     security_groups: instance1-security-group
-    volume_ids: '{ instance1_volumes|default([]) }'
-    volumes: ['instance1-volume']
+    volume_ids: "{ instance1_volumes|default([]) }"
+    volumes: ["instance1-volume"]
   - name: instance2
     instance_flavor: uom.mse.2c9g
     security_groups: instance2-security-group
-    volume_ids: '{ instance2_volumes|default([]) }'
-    volumes: ['instance2-volume']
+    volume_ids: "{ instance2_volumes|default([]) }"
+    volumes: ["instance2-volume"]
   - name: instance3
     instance_flavor: uom.mse.2c9g
     security_groups: instance3-security-group
-    volume_ids: '{ instance3_volumes|default([]) }'
-    volumes: ['instance3-volume']
+    volume_ids: "{ instance3_volumes|default([]) }"
+    volumes: ["instance3-volume"]
   - name: instance4
     instance_flavor: uom.mse.1c4g
     security_groups: instance4-security-group
-    volume_ids: '{ instance4_volumes|default([]) }'
-    volumes: ['instance4-volume']
+    volume_ids: "{ instance4_volumes|default([]) }"
+    volumes: ["instance4-volume"]
