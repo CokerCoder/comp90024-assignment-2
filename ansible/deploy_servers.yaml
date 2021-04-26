@@ -1,11 +1,10 @@
 ---
-
-- hosts: dbServers
-  vars_files:
-    - host_vars/config.yaml
-  gather_facts: true
-  roles:
-    - role: install-couchdb
+# - hosts: dbServers
+#   vars_files:
+#     - host_vars/config.yaml
+#   gather_facts: true
+#   roles:
+#     - role: install-couchdb
 
 - hosts: dbMaster
   vars_files:

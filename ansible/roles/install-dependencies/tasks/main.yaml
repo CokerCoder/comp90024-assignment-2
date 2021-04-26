@@ -2,7 +2,7 @@
 - name: Update apt
   become: yes
   apt:
-    upgrade: yes
+    upgrade: "yes"
     update_cache: yes
 
 - name: install dependencies

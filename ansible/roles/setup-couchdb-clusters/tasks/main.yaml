@@ -1,6 +1,8 @@
 ---
 - name: enable couchdb cluster
   become: yes
+  retries: 3
+  delay: 3
   uri:
     url: http://{{ groups['dbMaster'][0] }}:{{couchdb_port}}/{{ cluster_name }}
     status_code: 201, 400
@@ -67,7 +69,7 @@
   become: yes
   uri:
     url: http://{{ groups['dbMaster'][0] }}:{{ couchdb_port }}/{{ cluster_name }}
-    status_code: 201
+    status_code: 201, 400
     method: POST
     user: "{{ couchdb_user }}"
     password: "{{ couchdb_pass }}"
@@ -77,4 +79,3 @@
     body: '{"action": "finish_cluster"}'
     headers:
       Content-Type: "application/json"
-
