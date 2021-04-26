@@ -1,53 +1,17 @@
+---
 #############################################
 #                 CouchDB                   #
 #############################################
----
-# 抄来的参数们 有的有用有的没用
-couchdb_settings:
-  httpd:
-    port: "5984"
-    bind_address: "0.0.0.0"
-
-couchdb_admins:
-  admin: admin
-
-couchdb_users:
-  user_with_roles:
-    password: password123
-    roles:
-      - developer
-      - manager
-  user_without_roles:
-    password: password456
-
-couchdb_databases:
-  database_without_security: {}
-  database_with_admins:
-    admins:
-      names:
-        - user_without_roles
-      roles:
-        - manager
-  database_with_members:
-    members:
-      roles:
-        - developer
-
-couchdb_replication:
-  - source: my_database
-    target: http://backup.example.com:5984/my_database
-    continuous: yes
-
-couchdb_url: "http://localhost:5984"
-##################################################
-
+couchdb_image: ibmcom/couchdb3:latest
 couchdb_user: admin
 couchdb_pass: admin
 couchdb_VERSION: "3.1.1"
+couchdb_cookie: "a192aeb9904e6590849337933b000c99"
+couchdb_uuid: "a192aeb9904e6590849337933b001159"
 cluster_name: "_cluster_setup"
+couchdb_container_name: "couchdb_"
 couchdb_port: 5984
 couchdb_db_name: "live-tweets"
-
 #############################################
 #                  Docker                   #
 #############################################

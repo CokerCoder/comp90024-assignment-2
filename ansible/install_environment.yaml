@@ -1,5 +1,4 @@
 ---
-
 # - hosts: localhost
 #   roles:
 
@@ -7,14 +6,14 @@
 #   gather_facts: true
 
 - hosts: instances
-  
+
   vars_files:
     - host_vars/config.yaml
     - host_vars/create_instance.yaml
   gather_facts: true
 
   roles:
-     - role: add-proxy
-     - role: install-dependencies
-     - role: clone-github-rep
-     - role: mount-volume
+    - role: add-proxy
+    - role: install-dependencies
+    - role: clone-github-rep
+    - role: mount-volume

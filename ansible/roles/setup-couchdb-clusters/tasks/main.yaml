@@ -2,7 +2,7 @@
 - name: enable couchdb cluster
   become: yes
   uri:
-    url: http://127.0.0.1:{{couchdb_port}}/{{ cluster_name }}
+    url: http://{{ groups['dbMaster'][0] }}:{{couchdb_port}}/{{ cluster_name }}
     status_code: 201, 400
     method: POST
     user: "{{ couchdb_user }}"

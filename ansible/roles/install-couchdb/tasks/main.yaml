@@ -1,86 +1,101 @@
 ---
 # Ubuntu20的软件地址
-- name: Add specified repository into sources list
-  become: yes
-  ansible.builtin.apt_repository:
-    repo: deb http://cz.archive.ubuntu.com/ubuntu focal main
-    state: present
+# - name: Add specified repository into sources list
+#   become: yes
+#   ansible.builtin.apt_repository:
+#     repo: deb http://cz.archive.ubuntu.com/ubuntu focal main
+#     state: present
 
-- name: Update apt packages
-  become: true
-  apt:
-    update_cache: yes
+# - name: Update apt packages
+#   become: true
+#   apt:
+#     update_cache: yes
 
-- name: curl command
-  become: yes
-  apt_key:
-    url: https://couchdb.apache.org/repo/bintray-pubkey.asc
-    state: present
+# - name: curl command
+#   become: yes
+#   apt_key:
+#     url: https://couchdb.apache.org/repo/bintray-pubkey.asc
+#     state: present
 
-- name: echo command
-  become: yes
-  shell: echo "deb https://apache.bintray.com/couchdb-deb focal main" \
-    | sudo tee /etc/apt/sources.list.d/couchdb.list
+# - name: echo command
+#   become: yes
+#   shell: echo "deb https://apache.bintray.com/couchdb-deb focal main" \
+#     | sudo tee /etc/apt/sources.list.d/couchdb.list
 
-- name: install couchdb
-  become: yes
-  retries: 5
-  delay: 4
-  apt:
-    name: couchdb
-    state: latest
-    update_cache: yes
-  register: couchdb_install
+# - name: install couchdb
+#   become: yes
+#   retries: 5
+#   delay: 4
+#   apt:
+#     name: couchdb
+#     state: latest
+#     update_cache: yes
+#   register: couchdb_install
 
-- name: stop couchdb
-  become: yes
-  service:
-    name: couchdb
-    state: stopped
-  # when: couchdb_install.changed
-
-- name: change owner of couchdb executable
-  become: yes
-  file:
-    state: file
-    mode: 0770
-    owner: couchdb
-    group: couchdb
-    path: /opt/couchdb/bin/couchdb
-  # when: couchdb_install.changed
-
-- name: secure couchdb installation
-  become: yes
-  file:
-    state: directory
-    mode: 0770
-    owner: couchdb
-    group: couchdb
-    path: "{{ item }}"
-  with_items:
-    - /opt/couchdb
-  # when: couchdb_install.changed
-
-- name: setup admins
-  become: yes
-  lineinfile:
-    dest: /opt/couchdb/etc/local.ini
-    state: present
-    line: "{{ item.key }} = {{ item.value }}"
-    regexp: "^{{ item.key }} = "
-    insertafter: "^\\[admins\\]$"
-  with_dict: "{{ couchdb_admins }}"
-
-- name: start couchdb
-  become: yes
-  service:
-    name: couchdb
-    state: started
+# - name: stop couchdb
+#   become: yes
+#   service:
+#     name: couchdb
+#     state: stopped
 # when: couchdb_install.changed
 
-- name: check couchdb connection
+# - name: change owner of couchdb executable
+#   become: yes
+#   file:
+#     state: file
+#     mode: 0770
+#     owner: couchdb
+#     group: couchdb
+#     path: /opt/couchdb/bin/couchdb
+#   # when: couchdb_install.changed
+
+# - name: secure couchdb installation
+#   become: yes
+#   file:
+#     state: directory
+#     mode: 0770
+#     owner: couchdb
+#     group: couchdb
+#     path: "{{ item }}"
+#   with_items:
+#     - /opt/couchdb
+#   # when: couchdb_install.changed
+
+# - name: setup admins
+#   become: yes
+#   lineinfile:
+#     dest: /opt/couchdb/etc/local.ini
+#     state: present
+#     line: "{{ item.key }} = {{ item.value }}"
+#     regexp: "^{{ item.key }} = "
+#     insertafter: "^\\[admins\\]$"
+#   with_dict: "{{ couchdb_admins }}"
+
+# - name: start couchdb
+#   become: yes
+#   service:
+#     name: couchdb
+#     state: started
+# # when: couchdb_install.changed
+
+# - name: check couchdb connection
+#   become: yes
+#   uri: url=http://127.0.0.1:5984
+#   register: ping_db
+#   retries: 5
+#   until: ping_db is success
+
+- name: Start a container with a couchdb
   become: yes
-  uri: url=http://127.0.0.1:5984
-  register: ping_db
-  retries: 5
-  until: ping_db is success
+  docker_container:
+    name: "{{ couchdb_container_name }}"
+    image: "{{ couchdb_image }}"
+    ports:
+      - "{{couchdb_port}}:{{couchdb_port}}"
+      - "9100:9100"
+      - "4369:4369"
+    env:
+      COUCHDB_PASSWORD: "{{ couchdb_pass }}"
+      COUCHDB_USER: "{{ couchdb_user }}"
+      NODENAME: "{{ ansible_host }}"
+      COUCHDB_SECRET: "{{ couchdb_cookie }}"
