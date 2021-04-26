@@ -30,10 +30,13 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
+
+
 - name: Create inventory file
   copy:
-    content: "[instances]\n"
+    content: "[dbServers:children]\ndbMaster\ndbSlave\n\n[dbMaster:children]\ninstance1\n\n[dbSlave:children]\ninstance2\ninstance3\n\n[instances]\n"
     dest: "inventory/hosts.ini"
+
 
 - name: record all instance ip
   lineinfile:

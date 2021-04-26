@@ -1,9 +1,4 @@
 ---
-# - hosts: localhost
-#   roles:
-
-#     - role: add-ssh-key
-#   gather_facts: true
 
 - hosts: instances
 

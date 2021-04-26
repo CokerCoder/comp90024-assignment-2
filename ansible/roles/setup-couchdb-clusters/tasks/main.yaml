@@ -77,11 +77,4 @@
     body: '{"action": "finish_cluster"}'
     headers:
       Content-Type: "application/json"
-# - name: verify
-#   become: yes
-#   uri:
-#     url: http://{{ groups['dbMaster'][0] }}:{{couchdb_port}}/{{ cluster_name }}
-#     user: "{{ couchdb_user }}"
-#     password: "{{ couchdb_pass }}"
-#     force_basic_auth: yes
-#     return_content: yes
+
