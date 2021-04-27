@@ -28,17 +28,19 @@ class MyStreamListener(tweepy.StreamListener):
 
         if has_location_info(tweet):
             json_tweet = json.dumps(create_dict_input(tweet))
-            database.save({"doc":json_tweet})
             print("Storing one tweet...")
+            database.save({"doc":json_tweet})
 
 
+print("Connect to Server...")
 database = create_database(server)
 
 
 Listener = MyStreamListener()
+print("Set Listener...")
 myStream = tweepy.Stream(auth = auth,listener=Listener)
+print("Start Stream...")
 myStream.filter(locations=[144.293405,-38.548275,145.493112,-37.505479],languages='en')
-
 
 
 

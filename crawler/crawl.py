@@ -1,10 +1,10 @@
 import tweepy   
 import json
-import datetime
+from datetime import datetime
 import couchdb
 from tweepy.streaming import StreamListener
 
-from crawl_util import create_database,crawl_by_loction
+from crawl_util import create_database,crawl_by_loction,read_and_delete_first_date,crawl_by_loction_and_date
 
 # matt uses key:
 consumer_key = "WniU1K4CBvi9pSEgzGhr21rrA"   
@@ -23,6 +23,13 @@ api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 server = couchdb.Server('http://admin:admin@172.26.132.83:5984/')
 
 
+
+start, end = read_and_delete_first_date()
+start = datetime.strptime(start, '%Y-%m-%d %H:%M:%S')
+end = datetime.strptime(end, '%Y-%m-%d %H:%M:%S')
+
+
 database = create_database(server)
-crawl_by_loction(api,database,1000)
+crawl_by_loction_and_date(api,database,start,end)
+#crawl_by_loction(api,database,1000)
 
