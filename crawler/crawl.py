@@ -1,6 +1,7 @@
 import tweepy   
 import json
 import datetime
+import couchdb
 from tweepy.streaming import StreamListener
 
 # matt uses key:
@@ -9,47 +10,43 @@ consumer_secret = "VzBf6z8iXW81S4A5hSGotWdgZok6ezasrShvyWEEkZa5vteBZC"
 access_token = "1384413537733283842-xUpen03JKhDouUumzADJI2jcES9F36"   
 access_token_secret = "KPCt20qLZ44YVbtCsLJL0wBhNh2B2F0Xq3RAzeR7ccRs3"
 
-# 创建认证对象 
+# target database object
+server = couchdb.Server('http://admin:admin@172.26.132.83:5984/')
+try:
+    database = server.create('temp')
+except Exception as e:
+    server.delete('temp')
+    database = server.create('temp')
+
+# To create the object 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)   
 auth.set_access_token(access_token, access_token_secret)   
 
-# 传入auth参数，创建API对象 
+# Pass the auth, to create API object 
 api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)   
-# public_tweets = api.home_timeline()
-# for tweet in public_tweets:
-#     print (tweet.text)
+public_tweets = api.home_timeline()
+for tweet in public_tweets:
+    print (tweet.text)
 
-#crawl by the loctaion from newest time (only one time, duplicate problem)
+# crawl by the loctaion from newest time (only one time, duplicate problem)
 def crawl_by_loction():
-    # q is the key word of text
-    tweets = tweepy.Cursor(api.search, q='food', geocode="-37.999250,144.997395,57km", lang='en').items(5)    
-    for tweet in tweets:
-        print("Created_time: ", tweet.created_at)
-        print("text: ", tweet.text)
-        print("location: ", tweet.user.location)
-        #print(tweet)
+    cricTweet = tweepy.Cursor(api.search, geocode="-37.999250,144.997395,57km", lang='en').items(3)    
+    for tweet in cricTweet:
+        input_dict = {}
+        input_dict['id_str'] = tweet.id_str
+        input_dict['text'] = tweet.text
+        input_dict['location'] = tweet.user.location
+        input_dict['hashtags'] = tweet.entities['hashtags']
+        print(input_dict)
+        json_str = json.dumps(input_dict)
+        database.save({"doc":json_str})
+        # print(tweet)
 
-crawl_by_loction()
+crawl_by_loction();
 
-# crawl by time: 
-# def crawl_by_time():
-# tweets=tweepy.Cursor(api.search_full_archive,environment_name='**ENV NAME FROM API**', fromDate="202101010000", toDate="202103010000", geocode="-37.999250,144.997395,57km").items(2)
-# tweets = tweepy.Cursor(api.search, q='#contentmarketing', count=20000, lang='en', since='2021-01-20').items(2)
-# for tweet in tweets:
-#     print("Created_time: ", tweet.created_at)
-#     print("text: ", tweet.text)
-#     print("location: ", tweet.user.location)
-#     print(tweet)
+def read_from_db():
+    db_doc = server['temp']
+    for each_id in db_doc:
+        print(db_doc[each_id])
 
-
-# crawl by real time 
-# def crawl_by_loction():
-#   class MyStreamListener(tweepy.StreamListener):
-#       def on_data(self, data):
-#           # load data 
-#           json_tweet = json.loads(data)
-#           print(json_tweet)
-
-# my_stream = tweepy.Stream(auth = auth, listener=MyStreamListener())
-# # print(my_stream.running)
-# my_stream.filter(locations=[144.293405,-38.548275,145.493112,-37.505479], languages="en",stall_warnings=True)
+read_from_db()
