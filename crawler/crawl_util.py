@@ -41,6 +41,17 @@ def create_database(server):
     return database
 
 
+def find_or_creat_db(server,name):
+    try:
+        if name in server:
+            database = server[name]
+        else:
+            database = server.create(name)
+    except Exception as e:
+        server.delete(name)
+        database = server.create(name)
+    return database
+
 # create a dictionary contains information that we need
 def create_dict_input(tweet):
     tweet = tweet._json

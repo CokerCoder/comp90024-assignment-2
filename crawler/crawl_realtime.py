@@ -4,9 +4,9 @@ import datetime
 import couchdb
 from tweepy.streaming import StreamListener
 
-from crawl_util import create_database,crawl_by_loction,has_location_info,create_dict_input
+from crawl_util import has_location_info,create_dict_input,find_or_creat_db
 
-# matt uses key:
+# Echo uses key:
 consumer_key = "IiP6IJaXPBydO5TIlJDsHVkw4"   
 consumer_secret = "5cabZq4WiCBC3ZnTlX5wBbIvskX5rmGXy1iftkUhwRE4zBRyxw"   
 access_token = "1017762893570306048-dQOTxnvRbK0YVbD2oQZA3wvujIGdse"   
@@ -28,14 +28,26 @@ class MyStreamListener(tweepy.StreamListener):
         print("Find 1 tweet...")
 
         if has_location_info(tweet):
-            json_tweet = json.dumps(create_dict_input(tweet))
+
+            tweet = tweet._json
+
             print("Storing 1 tweet...")
             #print(json_tweet)
-            database.save({"doc":json_tweet})
+            #database.save({"doc":json_tweet})
+            database.save({'_id':str(tweet["id"]),
+                           'created_at': tweet['created_at'],
+                           'text': tweet['text'],
+                           #"place":tweet["place"],
+                            "Place_name":tweet["place"]["name"],
+                            "Place_full_name":tweet["place"]["full_name"],
+                            "Place_country":tweet["place"]["country"],
+                            "Place_coordinates":tweet["place"]["bounding_box"]['coordinates'][0]
+                           })
 
 
 print("Connect to Server...")
-database = create_database(server)
+#database = create_database(server)
+database = find_or_creat_db(server,"realtime")
 
 
 Listener = MyStreamListener()
