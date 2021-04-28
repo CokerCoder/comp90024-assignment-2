@@ -34,7 +34,8 @@ class MyStreamListener(tweepy.StreamListener):
             print("Storing 1 tweet...")
             #print(json_tweet)
             #database.save({"doc":json_tweet})
-            database.save({'_id':str(tweet["id"]),
+            if str(tweet["id"]) not in database:
+                database.save({'_id':str(tweet["id"]),
                            'created_at': tweet['created_at'],
                            'text': tweet['text'],
                            #"place":tweet["place"],
