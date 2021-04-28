@@ -4,7 +4,7 @@ import datetime
 import couchdb
 from tweepy.streaming import StreamListener
 
-from crawl_util import create_database,crawl_by_loction
+from crawl_util import create_database,crawl_by_loction,has_location_info,create_dict_input
 
 # matt uses key:
 consumer_key = "IiP6IJaXPBydO5TIlJDsHVkw4"   
@@ -25,10 +25,12 @@ server = couchdb.Server('http://admin:admin@172.26.132.83:5984/')
 
 class MyStreamListener(tweepy.StreamListener):
     def on_status(self, tweet):
+        print("Find 1 tweet...")
 
         if has_location_info(tweet):
             json_tweet = json.dumps(create_dict_input(tweet))
-            print("Storing one tweet...")
+            print("Storing 1 tweet...")
+            #print(json_tweet)
             database.save({"doc":json_tweet})
 
 
@@ -40,7 +42,7 @@ Listener = MyStreamListener()
 print("Set Listener...")
 myStream = tweepy.Stream(auth = auth,listener=Listener)
 print("Start Stream...")
-myStream.filter(locations=[144.293405,-38.548275,145.493112,-37.505479],languages='en')
+myStream.filter(locations=[144.293405,-38.548275,145.493112,-37.505479])
 
-
+print(myStream.running)
 
