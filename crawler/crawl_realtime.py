@@ -38,7 +38,6 @@ class MyStreamListener(tweepy.StreamListener):
                 database.save({'_id':str(tweet["id"]),
                            'created_at': tweet['created_at'],
                            'text': tweet['text'],
-                           #"place":tweet["place"],
                             "Place_name":tweet["place"]["name"],
                             "Place_full_name":tweet["place"]["full_name"],
                             "Place_country":tweet["place"]["country"],
