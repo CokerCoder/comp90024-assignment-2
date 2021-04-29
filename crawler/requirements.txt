@@ -1,4 +1,1 @@
-tweepy   
-json
-datetime
-couchdb
+tweepy==3.10.0
