@@ -4,7 +4,7 @@ import datetime
 import couchdb
 from tweepy.streaming import StreamListener
 
-from crawl_util import has_location_info,create_dict_input,find_or_creat_db
+from crawl_util import has_location_info,create_dict_input,find_or_create_db
 
 # Echo uses key:
 consumer_key = "IiP6IJaXPBydO5TIlJDsHVkw4"   
@@ -47,7 +47,7 @@ class MyStreamListener(tweepy.StreamListener):
 
 print("Connect to Server...")
 #database = create_database(server)
-database = find_or_creat_db(server,"tweet_docs")
+database = find_or_create_db(server,"tweet_docs")
 
 
 Listener = MyStreamListener()

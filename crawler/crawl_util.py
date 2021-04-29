@@ -13,7 +13,7 @@ def read_from_db(server):
         print(db_doc[each_id])
 
 # Create a database
-def find_or_creat_db(server,name):
+def find_or_create_db(server,name):
     try:
         if name in server:
             database = server[name]

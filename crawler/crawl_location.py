@@ -4,7 +4,7 @@ from datetime import datetime
 import couchdb
 from tweepy.streaming import StreamListener
 
-from crawl_util import find_or_creat_db,crawl_by_loction,read_and_delete_first_date,crawl_by_loction_and_date
+from crawl_util import find_or_create_db,crawl_by_loction,read_and_delete_first_date,crawl_by_loction_and_date
 
 # matt uses key:
 consumer_key = "WniU1K4CBvi9pSEgzGhr21rrA"   
@@ -29,6 +29,6 @@ server = couchdb.Server('http://admin:admin@172.26.132.83:5984/')
 # end = datetime.strptime(end, '%Y-%m-%d %H:%M:%S')
 
 
-database = find_or_creat_db(server, 'temp')
+database = find_or_create_db(server, 'temp')
 crawl_by_loction(api,database,1000)
 
