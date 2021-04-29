@@ -7,7 +7,7 @@
   gather_facts: true
 
   roles:
-    # - role: add-proxy
-    # - role: install-dependencies
+    - role: add-proxy
+    - role: install-dependencies
     - role: clone-github-rep
-    # - role: mount-volume
+    - role: mount-volume

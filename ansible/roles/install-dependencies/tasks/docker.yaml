@@ -1,13 +1,13 @@
 ---
+# Uninstall old Docker
 - name: Uninstall old versions of docker
-  tags: "docker"
   become: yes
   apt:
     name: ["docker", "docker-engine", "docker.io"]
     state: absent
 
-- name: Install dependencies for docker
-  tags: "docker"
+# Install Docker dependencies
+- name: Install dependencies
   become: yes
   apt:
     name:
@@ -21,70 +21,89 @@
     state: latest
     install_recommends: no
     update_cache: yes
+  environment: "{{ proxy_env }}"
 
+# Add Docker repository key
 - name: Add Docker apt repository key
-  tags: "docker"
   become: yes
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
+  environment: "{{ proxy_env }}"
 
+# Add Docker repository
 - name: Add Docker apt repository and update apt cache
-  tags: "docker"
   become: yes
   apt_repository:
     repo: "deb https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
     mode: "644"
     update_cache: yes
     state: present
+  environment: "{{proxy_env}}"
 
+# Install Docker
 - name: Install docker
-  tags: "docker"
   become: yes
   apt:
     name: ["docker-ce"]
     state: latest
     install_recommends: no
     update_cache: yes
+  environment: "{{proxy_env}}"
 
+# Install Docker compose
 - name: Install docker-compose
   tags: "docker"
   become: yes
   pip:
     name: ["docker-compose"]
     state: latest
+  environment: "{{proxy_env}}"
 
-- name: create proxy directory for docker
-  tags: "docker_proxy"
-  become: yes
+# Make sure systemd directory exists
+- name: Make sure that systemd directory exists
   file:
-    path: "/etc/systemd/system/docker.service.d/"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-    recurse: yes
-    state: directory
+    path: "/etc/systemd/system"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
 
-- name: create proxy file for docker
+# Make sure docker.service.d directory exists
+- name: Make sure that docker.service.d directory exists
   file:
-    path: "/etc/systemd/system/docker.service.d/http-proxy.conf"
-    state: touch
-
-- name: Add proxy for docker
+    path: "/etc/systemd/system/docker.service.d"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0755"
   become: yes
-  blockinfile:
-    path: /etc/systemd/system/docker.service.d/http-proxy.conf
-    block: |
-      [Service]
-      Environment="HTTP_PROXY=http://wwwproxy.unimelb.edu.au:8000/" "HTTPS_PROXY=http://wwwproxy.unimelb.edu.au:8000/" "http_proxy=http://wwwproxy.unimelb.edu.au:8000/" "https_proxy=http://wwwproxy.unimelb.edu.au:8000/" "no_proxy=localhost, 127.0.0.1, localaddress, 172.16.0.0/12, /melbourne.rc.nectar.org.au, .storage.unimelb.edu.au, .cloud.unimelb.edu.au"
 
-- name: flush docker proxy files
+# Configure Docker system proxy
+- name: Configure Docker proxy
+  template:
+    src: "../template/http-proxy.conf.j2"
+    dest: "/etc/systemd/system/docker.service.d/http-proxy.conf"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+  when: (ansible_service_mgr == 'systemd' and
+    (proxy_env.http_proxy is defined or proxy_env.https_proxy is defined))
   become: yes
-  shell: systemctl daemon-reload
 
-- name: restart docker
+# Restart systemd daemons
+- name: Reload systemd daemons
+  command: systemctl daemon-reload
   become: yes
-  shell: systemctl restart docker
 
-- name: add user to docker group
+# Restart Docker daemon
+- name: Restart docker daemon
+  command: systemctl restart docker
   become: yes
-  shell: gpasswd -a {{ansible_user}} docker
+
+# Restart Docker daemon
+- name: Restart docker
+  service:
+    name: docker
+    state: restarted
+  become: yes

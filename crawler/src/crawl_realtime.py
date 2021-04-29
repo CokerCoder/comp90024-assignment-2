@@ -47,7 +47,7 @@ class MyStreamListener(tweepy.StreamListener):
 
 print("Connect to Server...")
 #database = create_database(server)
-database = crawl_util.find_or_create_db(server,"tweet_docs")
+database = crawl_util.find_or_create_db(server,"tweet_docs_instance")
 
 
 Listener = MyStreamListener()

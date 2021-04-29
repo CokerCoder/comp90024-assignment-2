@@ -7,11 +7,11 @@
     state: "directory"
 
 # Set Docker proxy for University of Melbourne Research Cloud
-# - name: Ensure Docker client proxy settings are present on the server
-#   become: yes
-#   copy:
-#     content: "{{ docker_proxy_settings }}"
-#     dest: ~/.docker/config.json
+- name: Ensure Docker client proxy settings are present on the server
+  become: yes
+  copy:
+    content: "{{ docker_proxy_settings }}"
+    dest: ~/.docker/config.json
 
 # Build Docker image for crawler
 - name: Build an image and push it to local repo
@@ -19,37 +19,32 @@
     build:
       path: "/home/ubuntu/COMP90024/ccc-p2/crawler"
       pull: yes
-    name: ccc-p2/crawler
+    name: crawler
     tag: latest
     source: build
     force: yes
   become: yes
   environment: "{{ proxy_env }}"
-# # Stop existing Docker containers for Twitter Harvesters and remove them (if any)
-# - name: Stop Twitter Harvester Docker container
-#   become: yes
-#   docker_container:
-#     name: twitter-harvester
-#     state: absent
 
-# # Install cloudant python package to reset Twitter Harvester configuration in CouchDB
-# - pip:
-#     name: cloudant
-#   become: true
-#   environment: "{{ proxy_env }}"
+# Stop existing Docker containers for Twitter Harvesters and remove them (if any)
+- name: Stop crawler Docker container
+  become: yes
+  docker_container:
+    name: crawler
+    state: absent
 
-# # Run script to reset Twitter Harvester configuration in CouchDB
-# - name: Reset twitter harvesters
-#   command: 'python3 ~/cluster-and-cloud-computing-assignment-2/twitter-harvester/reset_twitter_harvesters.py'
-#   become: true
-#   run_once: true
+# Install cloudant python package to reset Twitter Harvester configuration in CouchDB
+- pip:
+    name: cloudant
+  become: true
+  environment: "{{ proxy_env }}"
 
-# # Create new docker container for Crawler and start container
-# - name: Create and start crawler Docker container
-#   become: yes
-#   docker_container:
-#     name: twitter-harvester
-#     image: cloud-assignment-2/tweet-harvester
-#     state: started
-#     pull: false
-#     recreate: true
+# Create new docker container for Crawler and start container
+- name: Create and start crawler Docker container
+  become: yes
+  docker_container:
+    name: crawler
+    image: crawler
+    state: started
+    pull: false
+    recreate: true
