@@ -1,0 +1,6 @@
+---
+
+- name: git pull
+  shell: git pull
+  args:
+    chdir: '{{ git_rep }}'
