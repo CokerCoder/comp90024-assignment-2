@@ -1,0 +1,21 @@
+---
+# Build Docker image for web frontend and web backend
+- name: Configure compose
+  become: yes
+  template:
+    src: "~/COMP90024/ccc-p2/web/docker-compose.yaml.j2"
+    dest: "~/COMP90024/ccc-p2/web/docker-compose.yaml"
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
+# Run Docker compose to activate web frontend and web backend
+- name: Run docker compose
+  become: yes
+  docker_compose:
+    project_src: "~/COMP90024/ccc-p2/web/"
+    pull: false
+    build: yes
+    state: present
+    remove_orphans: no
+    recreate: always
