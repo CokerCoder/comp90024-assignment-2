@@ -1,11 +1,9 @@
 FROM python:3
 
-ADD . /
-
-# Install dependencies
-
-# RUN pip3 install --no-cache-dir -r requirements.txt
+WORKDIR /home/ubuntu/COMP90024/ccc-p2/crawler
 
 COPY . .
 
-CMD [ "python3", "src/crawl_realtime.py"] 
+CMD ["crawl_realtime.py"]
+
+ENTRYPOINT ["python3"]
