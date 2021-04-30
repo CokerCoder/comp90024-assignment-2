@@ -8,5 +8,6 @@ COPY . .
 RUN pip3 install -r requirements.txt
 
 CMD ["crawl_realtime.py"]
+CMD ["crawl_location.py"]
 
 ENTRYPOINT ["python3"]

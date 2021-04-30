@@ -26,16 +26,16 @@ def find_or_create_db(server,name):
 
 
 def has_location_info(tweet):
-    if tweet.place:
+    if tweet["place"]:
         return True
     return False
-
 
 
 # crawl by the loctaion from newest time (only one time, duplicate problem)
 def crawl_by_loction(api,database,n = 100,):
     cricTweet = tweepy.Cursor(api.search, geocode="-37.999250,144.997395,57km", lang='en').items(n)    
     for tweet in cricTweet:
+        tweet = tweet._json
         if has_location_info(tweet) and str(tweet["id"]) not in database:
             database.save({'_id':str(tweet["id"]),
                         'created_at': tweet['created_at'],
@@ -45,14 +45,6 @@ def crawl_by_loction(api,database,n = 100,):
                         "Place_country":tweet["place"]["country"],
                         "Place_coordinates":tweet["place"]["bounding_box"]['coordinates'][0]
                         })
-
-
-# def crawl_by_loction_and_date(api,database,startDate,endDate):
-#     cricTweet = tweepy.Cursor(api.search, geocode="-37.999250,144.997395,57km", lang='en') 
-#     for tweet in cricTweet:
-#         if has_location_info(tweet) and tweet.created_at < endDate and tweet.created_at > startDate:
-#             json_tweet = json.dumps(create_dict_input(tweet))
-#             database.save({"doc":json_tweet})
 
 
 # Creat Date Data
