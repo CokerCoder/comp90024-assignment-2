@@ -27,9 +27,8 @@ class MyStreamListener(tweepy.StreamListener):
     def on_status(self, tweet):
         print("Find 1 tweet...")
 
+        tweet = tweet._json
         if crawl_util.has_location_info(tweet):
-
-            tweet = tweet._json
 
             print("Storing 1 tweet...")
             #print(json_tweet)
@@ -44,9 +43,18 @@ class MyStreamListener(tweepy.StreamListener):
                             "Place_coordinates":tweet["place"]["bounding_box"]['coordinates'][0]
                            })
 
+    def on_error(self, status_code):
+        print(status_code)
+
+        if status_code == 429:
+            time.sleep(15*60 + 1)
+        else: 
+            time.sleep(10)
+
 
 print("Connect to Server...")
 #database = create_database(server)
+#database = crawl_util.find_or_create_db(server,"tweet_docs")
 database = crawl_util.find_or_create_db(server,"tweet_docs_instance")
 
 
