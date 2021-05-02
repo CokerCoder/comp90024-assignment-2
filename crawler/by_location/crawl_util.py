@@ -20,8 +20,7 @@ def find_or_create_db(server,name):
         else:
             database = server.create(name)
     except Exception as e:
-        server.delete(name)
-        database = server.create(name)
+        database = server.create("new_"+name)
     return database
 
 
