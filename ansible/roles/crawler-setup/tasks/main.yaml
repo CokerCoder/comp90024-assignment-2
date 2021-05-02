@@ -71,9 +71,9 @@
 - name: Create and start crawler Docker container _realtime
   become: yes
   docker_container:
-    name: crawler
+    name: crawler_realtime
     image: crawler_realtime
-    state: started_realtime
+    state: started
     pull: false
     recreate: true
     restart_policy: always
