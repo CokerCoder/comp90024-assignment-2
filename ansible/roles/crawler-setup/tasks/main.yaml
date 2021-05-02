@@ -26,7 +26,7 @@
   become: yes
   environment: "{{ proxy_env }}"
 
-  - name: Build an image and push it to local repo _realtime
+- name: Build an image and push it to local repo _realtime
   docker_image:
     build:
       path: "/home/ubuntu/COMP90024/ccc-p2/crawler/by_realtime"
