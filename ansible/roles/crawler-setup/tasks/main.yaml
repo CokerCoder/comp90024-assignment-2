@@ -14,12 +14,24 @@
     dest: ~/.docker/config.json
 
 # Build Docker image for crawler
-- name: Build an image and push it to local repo
+- name: Build an image and push it to local repo _location
   docker_image:
     build:
-      path: "/home/ubuntu/COMP90024/ccc-p2/crawler"
+      path: "/home/ubuntu/COMP90024/ccc-p2/crawler/by_location"
       pull: yes
-    name: crawler
+    name: crawler_location
+    tag: latest
+    source: build
+    force: yes
+  become: yes
+  environment: "{{ proxy_env }}"
+
+  - name: Build an image and push it to local repo _realtime
+  docker_image:
+    build:
+      path: "/home/ubuntu/COMP90024/ccc-p2/crawler/by_realtime"
+      pull: yes
+    name: crawler_realtime
     tag: latest
     source: build
     force: yes
@@ -27,10 +39,16 @@
   environment: "{{ proxy_env }}"
 
 # Stop existing Docker containers for Twitter Harvesters and remove them (if any)
-- name: Stop crawler Docker container
+- name: Stop crawler Docker container _location
   become: yes
   docker_container:
-    name: crawler
+    name: crawler_location
+    state: absent
+
+- name: Stop crawler Docker container _realtime
+  become: yes
+  docker_container:
+    name: crawler_realtime
     state: absent
 
 # Install cloudant python package to reset Twitter Harvester configuration in CouchDB
@@ -40,11 +58,22 @@
   environment: "{{ proxy_env }}"
 
 # Create new docker container for Crawler and start container
-- name: Create and start crawler Docker container
+- name: Create and start crawler Docker container _location
   become: yes
   docker_container:
-    name: crawler
-    image: crawler
+    name: crawler_location
+    image: crawler_location
     state: started
     pull: false
     recreate: true
+    restart_policy: always
+
+- name: Create and start crawler Docker container _realtime
+  become: yes
+  docker_container:
+    name: crawler
+    image: crawler_realtime
+    state: started_realtime
+    pull: false
+    recreate: true
+    restart_policy: always
