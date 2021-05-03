@@ -15,8 +15,12 @@ class ViewCreator(object):
 		view = couchdb.design.ViewDefinition('twitter', 'count_tweets', map_fun=count_map, reduce_fun=count_reduce)
 		view.sync(self.db)
 
-		get_tweets = 'function(doc) { emit(("0000000000000000000"+doc.id).slice(-19), doc.text); }'
+		get_tweets = 'function(doc) { emit(doc._id, doc.text); }'
 		view = couchdb.design.ViewDefinition('twitter', 'get_tweets', map_fun=get_tweets)
+		view.sync(self.db)
+
+		get_time = 'function(doc) { emit(doc.created_at, doc.text); }'
+		view = couchdb.design.ViewDefinition('twitter', 'get_time', map_fun=get_time)
 		view.sync(self.db)
 
 	def save_tweet(self, tw):
@@ -29,3 +33,6 @@ class ViewCreator(object):
 
 	def get_tweets(self):
 		return self.db.view('twitter/get_tweets')
+		
+	def get_time(self):
+		return self.db.view('twitter/get_time')
