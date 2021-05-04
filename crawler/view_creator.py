@@ -1,6 +1,6 @@
 import couchdb
 import couchdb.design
-from crawl_util import find_or_create_db
+from by_realtime.crawl_util import find_or_create_db
 
 
 class ViewCreator(object):
@@ -15,12 +15,13 @@ class ViewCreator(object):
 		view = couchdb.design.ViewDefinition('twitter', 'count_tweets', map_fun=count_map, reduce_fun=count_reduce)
 		view.sync(self.db)
 
-		get_tweets = 'function(doc) { emit(doc._id, doc.text); }'
+		get_tweets = 'function(doc) { emit(doc._id, {Text: doc.text, Name: doc.Place_full_name, Coordinates: doc.Place_coordinates}); }'
 		view = couchdb.design.ViewDefinition('twitter', 'get_tweets', map_fun=get_tweets)
 		view.sync(self.db)
 
-		get_time = 'function(doc) { emit(doc.created_at, doc.text); }'
-		view = couchdb.design.ViewDefinition('twitter', 'get_time', map_fun=get_time)
+		sentiment_map = 'function(doc) { emit(doc.name, doc.sentiment[\'compound\']); }'
+		sentiment_reduce = """_stats"""
+		view = couchdb.design.ViewDefinition('twitter', 'sentiment_count', map_fun=sentiment_map, reduce_fun=sentiment_reduce)
 		view.sync(self.db)
 
 	def save_tweet(self, tw):
@@ -34,5 +35,6 @@ class ViewCreator(object):
 	def get_tweets(self):
 		return self.db.view('twitter/get_tweets')
 		
-	def get_time(self):
-		return self.db.view('twitter/get_time')
+	def sentiment_count(self):
+		for doc in self.db.view('twitter/sentiment_count'):
+			return doc
