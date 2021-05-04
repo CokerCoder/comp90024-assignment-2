@@ -1,6 +1,6 @@
 import couchdb
 import couchdb.design
-from crawl_util import find_or_create_db
+from by_realtime.crawl_util import find_or_create_db
 
 
 class ViewCreator(object):
@@ -15,7 +15,7 @@ class ViewCreator(object):
 		view = couchdb.design.ViewDefinition('twitter', 'count_tweets', map_fun=count_map, reduce_fun=count_reduce)
 		view.sync(self.db)
 
-		get_tweets = 'function(doc) { emit(doc._id, doc.text); }'
+		get_tweets = 'function(doc) { emit(doc._id, {Text: doc.text, Name: doc.Place_full_name, Coordinates: doc.Place_coordinates}); }'
 		view = couchdb.design.ViewDefinition('twitter', 'get_tweets', map_fun=get_tweets)
 		view.sync(self.db)
 
