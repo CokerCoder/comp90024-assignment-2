@@ -19,7 +19,7 @@ const User = () => {
 
     return (
         <div className="User">
-            <h2>CCC Project2</h2>
+            <h2>CCC Project-2 !!</h2>
             <h3>Click the button to load the users</h3>
             <Button
                 variant="contained"
