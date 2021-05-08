@@ -17,15 +17,17 @@ function App() {
   );
 
   return (
-    <div className="App">
-      <h1>COMP90024 CCC-P2</h1>
-      <Button variant="secondary" onClick={toMap}>
-          Start
-      </Button>
-      {/* <header className="App-header">
-        <Map />
-      </header> */}
-    </div>
+    <>
+      <div className="project-name">
+        <h1>COMP90024 CCC Project-2</h1>
+      </div>
+      <div className="start-area">
+        <h1>Group-11</h1>
+        <Button variant="success" onClick={toMap}>
+          Start explore
+        </Button>
+      </div>
+    </>
   );
 }
 
