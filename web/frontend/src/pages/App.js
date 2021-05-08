@@ -25,7 +25,9 @@ function App() {
       </div>
       <img src={mel_image} className="mel_image" />;
       <div className="start-area">
-        <h1>Group-11</h1>
+        <h2>Infrastructure VS Sentiment scores</h2>
+        <h3>Presented by Group-26 </h3>
+        <br></br>
         <Button variant="success" onClick={toMap}>
           Start explore
         </Button>

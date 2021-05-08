@@ -81,7 +81,7 @@ export default function Map() {
             <div className="drawer">
                 <Drawer
                     title="City Details"
-                    viewport width={450}
+                    viewport width={480}
                     placement="right"
                     closable={false}
                     onClose={onClose}
