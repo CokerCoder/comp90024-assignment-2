@@ -2,7 +2,7 @@ import React, { useState }  from 'react'
 import { MapContainer, LayersControl, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet';
 import { Drawer } from 'antd';
 import * as polygonData from '../data/mel_LGA.json';
-import 'antd/dist/antd.css';
+import 'antd/lib/drawer/style/index.css';
 import '../css/Map.css';
 
 export default function Map() {
