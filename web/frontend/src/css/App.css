@@ -1,0 +1,23 @@
+body {
+  background-color: black;
+}
+
+.project-name {
+  position: absolute;
+  top: 30%;
+  left: 20%;
+}
+
+.start-area {
+  position: absolute;
+  top: 70%;
+  left: 70%;
+}
+h1 {
+  color: white;
+}
+
+
+
+
+  
