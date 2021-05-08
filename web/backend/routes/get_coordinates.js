@@ -8,11 +8,11 @@ const nano = require("nano")(ip);
 router.get("/", async function (req, res, next) {
   var shape = [];
   let id = req.query.id;
-  var db = nano.use("postcode_aurin");
-  await db.view("get_all", "id").then((body) => {
+  var db = nano.use("tweet_docs");
+  await db.view("twitter", "get_tweets").then((body) => {
     body.rows.forEach((doc) => {
-      console.log(doc.value);
-      shape.push(doc.value);
+      console.log(doc.value.Coordinates);
+      shape.push(doc.value.Coordinates);
     });
   });
   res.send(shape);
