@@ -5,18 +5,16 @@ from shapely.geometry.polygon import Polygon
 
 
 
-LOCATION_POLYGON = json.load(open('melb.json'))["features"]
+Greater_Melbourne_POLYGON = json.load(open('Greater_Melbourne_LGA.json'))["features"]
 
 
 def find_location(coor):
-    for suburb in LOCATION_POLYGON:
-        if suburb['geometry']['type']=='Polygon':
-            if Polygon(suburb["geometry"]["coordinates"][0]).contains(Point(coor)):
-                return suburb['properties']["SA2_NAME16"]
-        else:
-            for subpolygon in suburb['geometry']['coordinates']:
-                if Polygon(subpolygon[0]).contains(Point(coor)):
-                    return suburb['properties']["SA2_NAME16"]
+    if coor == [145.0531355, -37.9725665]:
+        return None 
+    for suburb in Greater_Melbourne_POLYGON:
+        for subpolygon in suburb['geometry']['coordinates']:
+            if Polygon(subpolygon[0]).contains(Point(coor)):
+                return suburb['properties']["vic_lga__3"]
     return None
 
 
@@ -35,7 +33,7 @@ for doc in view.get_tweets():
     coor = [(doc.value["Coordinates"][0][0]+doc.value["Coordinates"][2][0])/2,(doc.value["Coordinates"][0][1]+doc.value["Coordinates"][1][1])/2]
 
     find_location(coor)
-    ## Return 一个SA2的地区 or None，可以直接
+    ## Return 一个LGA, 已经清理了too genral的location
 
     # database.save({'_id': doc.key,
     #                     'name': doc.value['Name'],
