@@ -19,9 +19,8 @@ class ViewCreator(object):
 		view = couchdb.design.ViewDefinition('twitter', 'get_tweets', map_fun=get_tweets)
 		view.sync(self.db)
 
-		sentiment_map = 'function(doc) { emit(doc.name, doc.sentiment[\'compound\']); }'
-		sentiment_reduce = """_stats"""
-		view = couchdb.design.ViewDefinition('twitter', 'sentiment_count', map_fun=sentiment_map, reduce_fun=sentiment_reduce)
+		location_map = 'function(doc) { emit(doc._id, {Location: doc.location, Sentiment: doc.sentiment}); }'
+		view = couchdb.design.ViewDefinition('twitter', 'get_sentiment', map_fun=location_map)
 		view.sync(self.db)
 
 	def save_tweet(self, tw):
@@ -35,6 +34,5 @@ class ViewCreator(object):
 	def get_tweets(self):
 		return self.db.view('twitter/get_tweets')
 		
-	def sentiment_count(self):
-		for doc in self.db.view('twitter/sentiment_count'):
-			return doc
+	def get_sentiment(self):
+		return self.db.view('twitter/get_sentiment')
