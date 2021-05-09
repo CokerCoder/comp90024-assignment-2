@@ -11,7 +11,7 @@ var usersRouter = require("./routes/users");
 var get_all = require("./routes/get_all");
 var get_all_cities = require("./routes/get_all_cities");
 var get_all_suburbs = require("./routes/get_all_suburbs");
-var get_coordinates = require("./routes/get_coordinates");
+var get_statistic = require("./routes/get_statistic");
 var couchDB = require("./routes/couchdb.js");
 var app = express();
 
@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/get_all", get_all);
-app.use("/get_coordinates", get_coordinates);
+app.use("/get_statistic", get_statistic);
 app.use("/get_all_cities", get_all_cities);
 app.use("/get_all_suburbs", get_all_suburbs);
 app.use("/couchdb", couchDB);
