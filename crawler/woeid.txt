@@ -1,6 +1,0 @@
-locality,area,country,woeid
-Sydney,Sydney,AU,1105779
-Melbourne,Melbourne,AU,1103816
-Brisbane,Brisbane,AU,1100661
-Perth,Perth,AU,1098081
-Adelaide,Adelaide,AU,1099805
