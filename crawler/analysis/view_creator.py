@@ -1,6 +1,6 @@
 import couchdb
 import couchdb.design
-from by_realtime.crawl_util import find_or_create_db
+from crawl_util import find_or_create_db
 
 
 class ViewCreator(object):

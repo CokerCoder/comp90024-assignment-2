@@ -1,6 +1,6 @@
 import json
 import couchdb
-from by_realtime.crawl_util import find_or_create_db
+from crawl_util import find_or_create_db
 from view_creator import ViewCreator
 from collections import defaultdict
 

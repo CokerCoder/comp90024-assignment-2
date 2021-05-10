@@ -5,7 +5,7 @@ from shapely.geometry.polygon import Polygon
 
 
 
-Greater_Melbourne_POLYGON = json.load(open('data/Greater_Melbourne_LGA.json'))["features"]
+Greater_Melbourne_POLYGON = json.load(open('../data/Greater_Melbourne_LGA.json'))["features"]
 
 
 def find_location(coor):
