@@ -7,16 +7,22 @@ from tqdm import tqdm
 
 SERVER = couchdb.Server('http://admin:admin@172.26.132.83:5984/')
 
-def load_profile():   
+def load_profile():  
+    all_lga = []
+    Greater_Melbourne_POLYGON = json.load(open('../data/Greater_Melbourne_LGA.json'))["features"]
+    for suburb in Greater_Melbourne_POLYGON:
+        all_lga.append(suburb['properties']["vic_lga__3"])
     database = find_or_create_db(SERVER, "profile")
     profile = json.load(open('../data/profile.json'))['features']
     for area in profile:
         doc = area['properties']
-        doc['_id'] = ' '.join(doc['lga_name'].split()[:-1]).upper()
-        try:
-            database.save(doc)
-        except:
-            pass
+        name = ' '.join(doc['lga_name'].split()[:-1]).upper()
+        if name in all_lga:
+            try:
+                doc['_id'] = name
+                database.save(doc)
+            except:
+                pass
 
 def load_education_TAFE():
     database = find_or_create_db(SERVER, "education_tafe")
@@ -73,6 +79,6 @@ def load_sport():
     
 if __name__ == '__main__':
     load_profile()
-    load_education_TAFE()
-    load_education_UNI()
-    load_sport()
+    # load_education_TAFE()
+    # load_education_UNI()
+    # load_sport()

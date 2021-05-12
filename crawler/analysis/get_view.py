@@ -18,7 +18,7 @@ sia = SentimentIntensityAnalyzer()
 
 print(view.count_tweets())
 
-Greater_Melbourne_POLYGON = json.load(open('Greater_Melbourne_LGA.json'))["features"]
+Greater_Melbourne_POLYGON = json.load(open('../data/Greater_Melbourne_LGA.json'))["features"]
 def find_location(coor):
     if coor == [145.0531355, -37.9725665]:
         return None
