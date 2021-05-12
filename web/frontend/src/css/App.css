@@ -3,21 +3,34 @@ body {
 }
 
 .project-name {
+  display: inline-block;
   position: absolute;
-  top: 30%;
-  left: 20%;
+  top: 10%;
+  left: 10%;
+}
+
+.uni_image {
+  height: 60px;
+  width: 60px;
+}
+
+.mel_image {
+  position: absolute;
+  top: 25%;
+  left: 35%;
+  height: 550px;
+  width: 550px;
 }
 
 .start-area {
   position: absolute;
-  top: 70%;
+  top: 75%;
   left: 70%;
 }
-h1 {
-  color: white;
+
+
+h1, h2, h3 {
+  color: aliceblue;
 }
-
-
-
 
   
