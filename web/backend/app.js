@@ -6,13 +6,14 @@ var logger = require("morgan");
 
 var cors = require("cors");
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
 
-var get_all = require("./routes/get_all");
-var get_all_cities = require("./routes/get_all_cities");
-var get_all_suburbs = require("./routes/get_all_suburbs");
-var get_statistic = require("./routes/get_statistic");
-var couchDB = require("./routes/couchdb.js");
+var culture = require("./routes/culture");
+var health = require("./routes/health");
+var infrastructure = require("./routes/infrastructure");
+var sentiment = require("./routes/sentiment");
+var transport = require("./routes/transport");
+var reputation = require("./routes/reputation");
+
 var app = express();
 
 // view engine setup
@@ -28,12 +29,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/get_all", get_all);
-app.use("/get_statistic", get_statistic);
-app.use("/get_all_cities", get_all_cities);
-app.use("/get_all_suburbs", get_all_suburbs);
-app.use("/couchdb", couchDB);
+app.use("/culture", culture);
+app.use("/sentiment", sentiment);
+app.use("/health", health);
+app.use("/infrastructure", infrastructure);
+app.use("/transport", transport);
+app.use("/reputation", reputation);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
