@@ -12,12 +12,11 @@ export default function Map() {
     const [health_feature, setHealth] = useState([]);
 
     useEffect(() => {
-        (async () => {
-            await axios.get('/health').then(response => {
-                console.log(response)
-                setHealth(response.data)
-            })
-        })();
+        const fetchData = async () => {
+            const result = await axios.get('/health');
+            setHealth(result.data)
+        };
+        fetchData();
     }, [])
 
     const [visible, setVisible] = useState(false);
