@@ -6,25 +6,24 @@ ip = "http://admin:admin@172.26.132.83:5984";
 const nano = require("nano")(ip);
 
 router.get("/", async function (req, res, next) {
-  var shape = null;
+  var reputation = [];
+  var db = nano.use("profile");
+  await db.list({ include_docs: true }).then((body) => {
+    body.rows.forEach((doc) => {
+      doc = doc.doc;
+      let dict = {
+        id: doc._id,
+        clients_that_recvd_alchl_drug_trtmnt_servs_per_1000_pop:
+          doc.clients_that_recvd_alchl_drug_trtmnt_servs_per_1000_pop,
+        ppl_rated_their_cmty_good_vgood_for_cmty_and_sup_grps_perc:
+          doc.ppl_rated_their_cmty_good_vgood_for_cmty_and_sup_grps_perc,
+        homeless_ppl_est_per_1000_pop: doc.homeless_ppl_est_per_1000_pop,
+      };
 
-  let id = req.query.id;
-  var db = nano.use("geo_json");
-  await db.view(
-    "geo_json",
-    "id",
-    { key: 3458, include_docs: true },
-    function (err, res) {
-      if (!err) {
-        console.log(JSON.strinfigy(res));
-        shape = JSON.stringify(res);
-      } else {
-        console.log(err);
-      }
-    }
-  );
-
-  res.send(shape);
+      reputation.push(dict);
+    });
+  });
+  res.send(reputation);
 });
 
 module.exports = router;
