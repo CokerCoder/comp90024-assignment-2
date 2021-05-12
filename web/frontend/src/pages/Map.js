@@ -1,11 +1,24 @@
-import React, { useState }  from 'react'
+import React, { useState, useEffect}  from 'react'
 import { MapContainer, LayersControl, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet';
-import { Drawer } from 'antd';
+import { Drawer, message } from 'antd';
+import axios from '../commons/axios';
 import * as polygonData from '../data/mel_LGA.json';
 import 'antd/lib/drawer/style/index.css';
 import '../css/Map.css';
 
 export default function Map() {
+
+    
+    const [health_feature, setHealth] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            await axios.get('/health').then(response => {
+                console.log(response)
+                setHealth(response.data)
+            })
+        })();
+    }, [])
 
     const [visible, setVisible] = useState(false);
     const showDrawer = () => {
@@ -21,6 +34,7 @@ export default function Map() {
 
     function whenClicked(e) {
         showDrawer();
+        console.log(health_feature)
     }
 
     //function to show popup when hover
