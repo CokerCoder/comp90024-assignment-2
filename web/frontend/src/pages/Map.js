@@ -17,9 +17,8 @@ import "../css/Map.css";
 export default function Map(prop) {
 
   const [visible, setVisible] = useState(false);
-  const [myData, setMyData] = useState(null);
-
-//   const myData = [{angle: 2.8}, {angle: 97.2}]
+  const [myData, setMyData] = useState([]);
+  // const myData = [{angle: 2.8}, {angle: 97.2}]
 
   useEffect(() => {
     (async () => {
@@ -34,31 +33,27 @@ export default function Map(prop) {
     
   }, []);
 
-  const showDrawer = () => {
-    setVisible(true);
-  };
   const onClose = () => {
     setVisible(false);
   };
 
   var myStyle = {
     opacity: 0.1,
-  };
+  };  
 
 
   const whenClicked = (subName) => {
     console.log(subName);
-    showDrawer();
+    setVisible(true);
+
     let culture = JSON.parse(localStorage.getItem("culture"));
     let health = JSON.parse(localStorage.getItem("health"));
 
     let lang = culture.find(x => x.id === subName).ppl_who_speak_a_lang_other_english_at_home_perc
     let born = culture.find(x => x.id === subName).ppl_born_overseas_perc
 
+    setMyData([{angle: lang}, {angle: 100-lang}])
     console.log(lang);
-
-    setMyData([{angle: lang}, {angle: 1-lang}])
-
     console.log(culture);
     
   }
