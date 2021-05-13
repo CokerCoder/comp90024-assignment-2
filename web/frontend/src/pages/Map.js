@@ -8,7 +8,8 @@ import {
   GeoJSON,
 } from "react-leaflet";
 import { RadialChart } from 'react-vis';
-import { Drawer, message } from "antd";
+import ReactApexChart from 'apexcharts'
+import { Drawer } from "antd";
 import axios from "../commons/axios";
 import * as polygonData from "../data/mel_LGA.json";
 import "antd/lib/drawer/style/index.css";
@@ -17,8 +18,14 @@ import "../css/Map.css";
 export default function Map(prop) {
 
   const [visible, setVisible] = useState(false);
-  const [myData, setMyData] = useState([]);
-  // const myData = [{angle: 2.8}, {angle: 97.2}]
+  const [subName, setSubName] = useState(null);
+  // Culture 
+  const [languagePerc, setLanguagePerc] = useState([]);
+  const [born, setBorn] = useState([]);
+  // Health
+  const [insecurity, setInsecurity] = useState([]);
+  
+
 
   useEffect(() => {
     (async () => {
@@ -42,20 +49,32 @@ export default function Map(prop) {
   };  
 
 
-  const whenClicked = (subName) => {
-    console.log(subName);
-    setVisible(true);
-
+  const cultureFeature = (subName) => { 
     let culture = JSON.parse(localStorage.getItem("culture"));
-    let health = JSON.parse(localStorage.getItem("health"));
-
     let lang = culture.find(x => x.id === subName).ppl_who_speak_a_lang_other_english_at_home_perc
     let born = culture.find(x => x.id === subName).ppl_born_overseas_perc
 
-    setMyData([{angle: lang}, {angle: 100-lang}])
-    console.log(lang);
-    console.log(culture);
-    
+    setLanguagePerc([{angle: lang, label: +lang +'%'}, {angle: 100-lang, label: (100-lang) +'%'}])
+    setBorn([{angle: born, label: +born +'%'}, {angle: 100-born, label: (100-born) +'%'}])
+  }
+
+  const healthFeature = (subName) => {
+    let health = JSON.parse(localStorage.getItem("health"));
+    let insecurity = health.find(x => x.id === subName).ppl_with_food_insecurity_perc
+    setInsecurity([{angle: insecurity, label: +insecurity +'%', color:"yellow"}, {angle: 100-insecurity, label: (100-insecurity) +'%', color:"orange"}])
+    console.log(insecurity);
+  }
+
+  const showInfo = () => {
+    console.log('this')
+   }
+
+  const whenClicked = (subName) => {
+    console.log(subName);
+    setSubName(subName);
+    setVisible(true);
+    cultureFeature(subName);
+    healthFeature(subName);
   }
 
   //function to show popup when hover
@@ -78,6 +97,8 @@ export default function Map(prop) {
       click: () => whenClicked(subName),
     });
   };
+
+
 
   return (
     <>
@@ -121,21 +142,69 @@ export default function Map(prop) {
       </MapContainer>
       <div className="drawer">
         <Drawer
-          title="City Details"
+          title={"Subcity Name: "+subName}
           viewport
-          width={450}
+          width={500}
           placement="right"
           closable={false}
           onClose={onClose}
           visible={visible}
         >
-          <h3>Culture</h3>
-          <RadialChart
-            data={myData}
-            width={150}
-            height={150} />
+            <div className="each_feature">
+                <h3>Culture</h3>
+                <div className="culture_feature">
+                    <div class="foo blue"></div>
+                    <p style={{color:"rgb(121,199,227)"}}>
+                        multilingual speakers
+                    </p>
 
-          <h3>Health</h3>
+                    <div class="foo dark_blue"></div>
+                    <p style={{color:"rgb(18,147,154)"}}>
+                        English speakers 
+                    </p>
+            
+                    <RadialChart
+                        data={languagePerc}
+                        width={150}
+                        height={150}
+                        showLabels={true} />
+                </div>
+                <div className="culture_feature">
+                    <div class="foo blue"></div>
+                    <p style={{color:"rgb(121,199,227)"}}>
+                        People born Oversease
+                    </p>
+                    <div class="foo dark_blue"></div>
+                    <p style={{color:"rgb(18,147,154)"}}>
+                        Native-born
+                    </p>
+                    <RadialChart
+                    data={born}
+                    width={150}
+                    height={150}
+                    showLabels={true} />
+                </div>
+            </div>
+
+            <div className="each_feature">
+                    <h3>Health</h3>
+                    <div class="foo yellow"></div>
+                    <p style={{color:"rgb(209, 209, 20)"}}>
+                        Food insecurity
+                    </p>
+                    <div class="foo orange"></div>
+                    <p style={{color:"orange"}}>
+                        Food security
+                    </p>
+                    <RadialChart
+                    data={insecurity}
+                    width={150}
+                    height={150}
+                    colorType="literal"
+                    showLabels={true} />
+            </div>
+          
+          
           <h3>Infrastructure</h3>
           <h3>Reputation</h3>
           <h3>Transport</h3>
