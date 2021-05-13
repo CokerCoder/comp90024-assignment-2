@@ -68,7 +68,7 @@ export default function Map(prop) {
     let lang = culture.find(x => x.id === subName).ppl_who_speak_a_lang_other_english_at_home_perc
     let born = culture.find(x => x.id === subName).ppl_born_overseas_perc
 
-    setLanguagePerc([['People','Percentage'], ['multilingual speakers', lang], ['English speakers', (100-lang)]])
+    setLanguagePerc([['People','Percentage'], ['Multilingual speakers', lang], ['English speakers', (100-lang)]])
     setBorn([['People','Percentage'], ['Born Oversease', born], ['Native-born', (100-born)]])
   }
 
@@ -84,7 +84,7 @@ export default function Map(prop) {
     let sport = infrastructure.find(x => x.id === subName).sport
     let uni = infrastructure.find(x => x.id === subName).uni
     let taft = infrastructure.find(x => x.id === subName).taft
-    setInfras([['Feature', 'Amount'], ['sport', sport], ['uni', uni], ['taft', taft]])
+    setInfras([['Feature', 'Amount'], ['Sport venues', sport], ['University', uni], ['taft', taft]])
     
   }
 
@@ -95,7 +95,7 @@ export default function Map(prop) {
     let homelessData  = reputation.find(x => x.id === subName).homeless_ppl_est_per_1000_pop
 
     setAlchl([['People','Percentage'], ['Alcoholism', alchlData], ['Others', (1000-alchlData)]])
-    setHappiness([['People','Percentage'], ['Happiness', happinessData], ['Not Happiness', (100-happinessData)]])
+    setHappiness([['People','Percentage'], ['Happiness', happinessData], ['Unhappiness', (100-happinessData)]])
     setHomeless([['People','Percentage'], ['Homeless People', homelessData], ['Others', (1000-homelessData)]])
     console.log(happinessData);
   }
@@ -136,44 +136,46 @@ export default function Map(prop) {
 
   return (
     <>
-      <MapContainer
+    <MapContainer
         center={[-37.813629, 144.963058]}
         zoom={18}
         scrollWheelZoom={true}
-        style={{ height: "100vh" }}
-      >
+        style={{ height: "100vh" }}>
         <LayersControl position="topright">
-          {/* The style of map */}
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a > contributors'
-          />
-
-          {/* <TileLayer
-                        attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-                        url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'
-                    /> */}
+            <LayersControl.BaseLayer checked name="OpenStreetMap.NormalMode">
+                <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
+                <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"/>
+            </LayersControl.BaseLayer>
+            <LayersControl.BaseLayer name="OpenStreetMap.DarkMode">
+                <TileLayer
+                    attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+                    url='https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png'/> 
+            </LayersControl.BaseLayer>
 
           {/* Layer of marker */}
-          <LayersControl.Overlay name="Marker with popup">
-            <Marker
-              position={[-37.813629, 144.963058]}
-              iconUrl={"https://static.thenounproject.com/png/780108-200.png"}
-            >
-              <Popup>Melbourne city</Popup>
-            </Marker>
-          </LayersControl.Overlay>
+            <LayersControl.Overlay name="Overview">
+                <Marker
+                position={[-37.813629, 144.963058]}
+                iconUrl={"https://static.thenounproject.com/png/780108-200.png"}>
+                </Marker>
+            </LayersControl.Overlay>
 
           {/* Layer of hotmap */}
-          <LayersControl.Overlay name="Feature group">
-            <GeoJSON
-              data={polygonData.features}
-              style={myStyle}
-              onEachFeature={onEachSub}
-            />
-          </LayersControl.Overlay>
+            <LayersControl.Overlay name="Feature group">
+                <GeoJSON
+                data={polygonData.features}
+                style={myStyle}
+                onEachFeature={onEachSub}/>
+            </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>
+
       <div className="drawer">
         <Drawer
           title={"Subcity Name: "+subName}
@@ -182,8 +184,8 @@ export default function Map(prop) {
           placement="right"
           closable={false}
           onClose={onClose}
-          visible={visible}
-        >
+          visible={visible}>
+
             <div className="each_feature">
                 <h3>Culture</h3>
                 <div className="inner_feature">
@@ -286,12 +288,7 @@ export default function Map(prop) {
                         colors: ['rgb(17, 207, 11)', 'rgb(7, 163, 202)'],
                         is3D: true,
                     }} />
-
             </div>
-        
-          
-          <h3>Transport</h3>
-          <h3>Sentiment</h3>
         </Drawer>
       </div>
     </>
