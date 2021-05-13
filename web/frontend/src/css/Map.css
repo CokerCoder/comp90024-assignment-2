@@ -18,7 +18,7 @@ h3 {
   }
 
   .yellow {
-    background:rgb(209, 209, 20);
+    background:rgb(238, 238, 38);
   }
 
   .orange {
@@ -26,10 +26,10 @@ h3 {
   }
 
 .each_feature {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
-.culture_feature{
+.inner_feature{
     display: inline-block;
     width: 50%;
 }

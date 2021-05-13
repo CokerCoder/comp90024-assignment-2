@@ -8,7 +8,7 @@ import {
   GeoJSON,
 } from "react-leaflet";
 import { RadialChart } from 'react-vis';
-import ReactApexChart from 'apexcharts'
+import Chart from "react-google-charts";
 import { Drawer } from "antd";
 import axios from "../commons/axios";
 import * as polygonData from "../data/mel_LGA.json";
@@ -24,19 +24,25 @@ export default function Map(prop) {
   const [born, setBorn] = useState([]);
   // Health
   const [insecurity, setInsecurity] = useState([]);
+  // infras
+  const [infras, setInfras] = useState([]);
   
-
 
   useEffect(() => {
     (async () => {
         const _res = await axios.get("/culture");
         localStorage.setItem("culture", JSON.stringify(_res.data));
     })();
-
+    
     (async () => {
       const _res = await axios.get("/health");
       localStorage.setItem("health", JSON.stringify(_res.data));
     })();
+
+    (async () => {
+        const _res = await axios.get("/infrastructure");
+        localStorage.setItem("infrastructure", JSON.stringify(_res.data));
+      })();
     
   }, []);
 
@@ -54,15 +60,25 @@ export default function Map(prop) {
     let lang = culture.find(x => x.id === subName).ppl_who_speak_a_lang_other_english_at_home_perc
     let born = culture.find(x => x.id === subName).ppl_born_overseas_perc
 
-    setLanguagePerc([{angle: lang, label: +lang +'%'}, {angle: 100-lang, label: (100-lang) +'%'}])
-    setBorn([{angle: born, label: +born +'%'}, {angle: 100-born, label: (100-born) +'%'}])
+    setLanguagePerc([['People','Percentage'], ['multilingual speakers', lang], ['English speakers', (100-lang)]])
+    setBorn([['People','Percentage'], ['Born Oversease', born], ['Native-born', (100-born)]])
   }
 
   const healthFeature = (subName) => {
     let health = JSON.parse(localStorage.getItem("health"));
     let insecurity = health.find(x => x.id === subName).ppl_with_food_insecurity_perc
-    setInsecurity([{angle: insecurity, label: +insecurity +'%', color:"yellow"}, {angle: 100-insecurity, label: (100-insecurity) +'%', color:"orange"}])
-    console.log(insecurity);
+    setInsecurity([['People','Percentage'], ['Food insecurity', insecurity], ['Food Safe', (100-insecurity)]])
+    // console.log(insecurity);
+  }
+
+  const infrastructureFeature = (subName) => {
+    let infrastructure = JSON.parse(localStorage.getItem("infrastructure"));
+    console.log(infrastructure);
+    let sport = infrastructure.find(x => x.id === subName).sport
+    let uni = infrastructure.find(x => x.id === subName).uni
+    let taft = infrastructure.find(x => x.id === subName).taft
+    // setInsecurity([{angle: insecurity, label: +insecurity +'%', color:"yellow"}, {angle: 100-insecurity, label: (100-insecurity) +'%', color:"orange"}])
+    
   }
 
   const showInfo = () => {
@@ -75,6 +91,7 @@ export default function Map(prop) {
     setVisible(true);
     cultureFeature(subName);
     healthFeature(subName);
+    infrastructureFeature(subName);
   }
 
   //function to show popup when hover
@@ -144,7 +161,7 @@ export default function Map(prop) {
         <Drawer
           title={"Subcity Name: "+subName}
           viewport
-          width={500}
+          width={580}
           placement="right"
           closable={false}
           onClose={onClose}
@@ -152,60 +169,50 @@ export default function Map(prop) {
         >
             <div className="each_feature">
                 <h3>Culture</h3>
-                <div className="culture_feature">
-                    <div class="foo blue"></div>
-                    <p style={{color:"rgb(121,199,227)"}}>
-                        multilingual speakers
-                    </p>
-
-                    <div class="foo dark_blue"></div>
-                    <p style={{color:"rgb(18,147,154)"}}>
-                        English speakers 
-                    </p>
-            
-                    <RadialChart
+                <div className="inner_feature">
+                    <Chart
+                        width={'300px'}
+                        height={'300px'}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart</div>}
                         data={languagePerc}
-                        width={150}
-                        height={150}
-                        showLabels={true} />
+                        options={{
+                            title: 'Language Speaker',
+                        }} />
                 </div>
-                <div className="culture_feature">
-                    <div class="foo blue"></div>
-                    <p style={{color:"rgb(121,199,227)"}}>
-                        People born Oversease
-                    </p>
-                    <div class="foo dark_blue"></div>
-                    <p style={{color:"rgb(18,147,154)"}}>
-                        Native-born
-                    </p>
-                    <RadialChart
-                    data={born}
-                    width={150}
-                    height={150}
-                    showLabels={true} />
+
+                <div className="inner_feature">
+                    <Chart
+                        width={'300px'}
+                        height={'300px'}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart</div>}
+                        data={born}
+                        options={{
+                            title: 'Born Information',
+                        }} />
                 </div>
             </div>
 
             <div className="each_feature">
                     <h3>Health</h3>
-                    <div class="foo yellow"></div>
-                    <p style={{color:"rgb(209, 209, 20)"}}>
-                        Food insecurity
-                    </p>
-                    <div class="foo orange"></div>
-                    <p style={{color:"orange"}}>
-                        Food security
-                    </p>
-                    <RadialChart
-                    data={insecurity}
-                    width={150}
-                    height={150}
-                    colorType="literal"
-                    showLabels={true} />
+                    <Chart
+                        width={'300px'}
+                        height={'300px'}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart</div>}
+                        data={insecurity}
+                        options={{
+                            title: 'Food safety',
+                            is3D: true,
+                            colors: ['rgb(238, 238, 38)', 'orange']
+                        }} />
             </div>
           
-          
-          <h3>Infrastructure</h3>
+            <div className="each_feature">
+                <h3>Infrastructure</h3>
+            </div>
+        
           <h3>Reputation</h3>
           <h3>Transport</h3>
           <h3>Sentiment</h3>
