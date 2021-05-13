@@ -2,3 +2,34 @@ h3 {
     color:black;
 }
   
+.foo {
+    float: left;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+  }
+  
+  .blue {
+    background: rgb(121,199,227);
+  }
+  
+  .dark_blue {
+    background: rgb(18,147,154);
+  }
+
+  .yellow {
+    background:rgb(209, 209, 20);
+  }
+
+  .orange {
+    background:orange;
+  }
+
+.each_feature {
+    margin-bottom: 30px;
+}
+
+.culture_feature{
+    display: inline-block;
+    width: 50%;
+}
