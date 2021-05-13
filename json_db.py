@@ -22,7 +22,7 @@ with open("tweets.json", "r",encoding='utf-8') as file:
 		while True:
 			
 			line = file.readline()
-			if line == "]}":
+			if line.startswith("]}"):
 				break
 
 			if line.startswith('{"id":"'):
