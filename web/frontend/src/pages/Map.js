@@ -7,6 +7,7 @@ import {
   Popup,
   GeoJSON,
 } from "react-leaflet";
+import { RadialChart } from 'react-vis';
 import { Drawer, message } from "antd";
 import axios from "../commons/axios";
 import * as polygonData from "../data/mel_LGA.json";
@@ -14,13 +15,23 @@ import "antd/lib/drawer/style/index.css";
 import "../css/Map.css";
 
 export default function Map(prop) {
+
   const [visible, setVisible] = useState(false);
+  const [myData, setMyData] = useState(null);
+
+//   const myData = [{angle: 2.8}, {angle: 97.2}]
 
   useEffect(() => {
+    (async () => {
+        const _res = await axios.get("/culture");
+        localStorage.setItem("culture", JSON.stringify(_res.data));
+    })();
+
     (async () => {
       const _res = await axios.get("/health");
       localStorage.setItem("health", JSON.stringify(_res.data));
     })();
+    
   }, []);
 
   const showDrawer = () => {
@@ -34,10 +45,22 @@ export default function Map(prop) {
     opacity: 0.1,
   };
 
-  function whenClicked(e) {
+
+  const whenClicked = (subName) => {
+    console.log(subName);
     showDrawer();
+    let culture = JSON.parse(localStorage.getItem("culture"));
     let health = JSON.parse(localStorage.getItem("health"));
-    console.log(health);
+
+    let lang = culture.find(x => x.id === subName).ppl_who_speak_a_lang_other_english_at_home_perc
+    let born = culture.find(x => x.id === subName).ppl_born_overseas_perc
+
+    console.log(lang);
+
+    setMyData([{angle: lang}, {angle: 1-lang}])
+
+    console.log(culture);
+    
   }
 
   //function to show popup when hover
@@ -57,7 +80,7 @@ export default function Map(prop) {
     });
 
     layer.on({
-      click: whenClicked,
+      click: () => whenClicked(subName),
     });
   };
 
@@ -111,7 +134,17 @@ export default function Map(prop) {
           onClose={onClose}
           visible={visible}
         >
-          <p>Some data...</p>
+          <h3>Culture</h3>
+          <RadialChart
+            data={myData}
+            width={150}
+            height={150} />
+
+          <h3>Health</h3>
+          <h3>Infrastructure</h3>
+          <h3>Reputation</h3>
+          <h3>Transport</h3>
+          <h3>Sentiment</h3>
         </Drawer>
       </div>
     </>
