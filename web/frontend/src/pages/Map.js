@@ -7,7 +7,6 @@ import {
   Popup,
   GeoJSON,
 } from "react-leaflet";
-import { RadialChart } from 'react-vis';
 import Chart from "react-google-charts";
 import { Drawer } from "antd";
 import axios from "../commons/axios";
@@ -26,6 +25,10 @@ export default function Map(prop) {
   const [insecurity, setInsecurity] = useState([]);
   // infras
   const [infras, setInfras] = useState([]);
+  // reputation
+  const [alchl, setAlchl] = useState([]);
+  const [happiness, setHappiness] = useState([]);
+  const [homeless, setHomeless] = useState([]);
   
 
   useEffect(() => {
@@ -42,7 +45,12 @@ export default function Map(prop) {
     (async () => {
         const _res = await axios.get("/infrastructure");
         localStorage.setItem("infrastructure", JSON.stringify(_res.data));
-      })();
+    })();
+
+    (async () => {
+        const _res = await axios.get("/reputation");
+        localStorage.setItem("reputation", JSON.stringify(_res.data));
+    })();
     
   }, []);
 
@@ -73,17 +81,25 @@ export default function Map(prop) {
 
   const infrastructureFeature = (subName) => {
     let infrastructure = JSON.parse(localStorage.getItem("infrastructure"));
-    console.log(infrastructure);
     let sport = infrastructure.find(x => x.id === subName).sport
     let uni = infrastructure.find(x => x.id === subName).uni
     let taft = infrastructure.find(x => x.id === subName).taft
-    // setInsecurity([{angle: insecurity, label: +insecurity +'%', color:"yellow"}, {angle: 100-insecurity, label: (100-insecurity) +'%', color:"orange"}])
+    setInfras([['Feature', 'Amount'], ['sport', sport], ['uni', uni], ['taft', taft]])
     
   }
 
-  const showInfo = () => {
-    console.log('this')
-   }
+  const reputationFeature = (subName) => {
+    let reputation = JSON.parse(localStorage.getItem("reputation"));
+    let alchlData = reputation.find(x => x.id === subName).clients_that_recvd_alchl_drug_trtmnt_servs_per_1000_pop
+    let happinessData  = reputation.find(x => x.id === subName).ppl_rated_their_cmty_good_vgood_for_cmty_and_sup_grps_perc
+    let homelessData  = reputation.find(x => x.id === subName).homeless_ppl_est_per_1000_pop
+
+    setAlchl([['People','Percentage'], ['Alcoholism', alchlData], ['Others', (1000-alchlData)]])
+    setHappiness([['People','Percentage'], ['Happiness', happinessData], ['Not Happiness', (100-happinessData)]])
+    setHomeless([['People','Percentage'], ['Homeless People', homelessData], ['Others', (1000-homelessData)]])
+    console.log(happinessData);
+  }
+
 
   const whenClicked = (subName) => {
     console.log(subName);
@@ -92,6 +108,7 @@ export default function Map(prop) {
     cultureFeature(subName);
     healthFeature(subName);
     infrastructureFeature(subName);
+    reputationFeature(subName);
   }
 
   //function to show popup when hover
@@ -174,10 +191,11 @@ export default function Map(prop) {
                         width={'300px'}
                         height={'300px'}
                         chartType="PieChart"
-                        loader={<div>Loading Chart</div>}
+                        loader={<div>Loading Chart...</div>}
                         data={languagePerc}
                         options={{
                             title: 'Language Speaker',
+                            is3D: true,
                         }} />
                 </div>
 
@@ -186,10 +204,11 @@ export default function Map(prop) {
                         width={'300px'}
                         height={'300px'}
                         chartType="PieChart"
-                        loader={<div>Loading Chart</div>}
+                        loader={<div>Loading Chart...</div>}
                         data={born}
                         options={{
                             title: 'Born Information',
+                            is3D: true,
                         }} />
                 </div>
             </div>
@@ -200,7 +219,7 @@ export default function Map(prop) {
                         width={'300px'}
                         height={'300px'}
                         chartType="PieChart"
-                        loader={<div>Loading Chart</div>}
+                        loader={<div>Loading Chart...</div>}
                         data={insecurity}
                         options={{
                             title: 'Food safety',
@@ -211,9 +230,66 @@ export default function Map(prop) {
           
             <div className="each_feature">
                 <h3>Infrastructure</h3>
+                <Chart
+                    width={'500px'}
+                    height={'300px'}
+                    chartType="Bar"
+                    loader={<div>Loading Chart...</div>}
+                    data={infras}
+                    options={{
+                        chart: {
+                        title: 'Infrastructure',
+                        is3D: true,
+                        colors: ['rgb(238, 238, 38)', 'orange']
+                        },
+                    }}
+                    />
+            </div>
+
+            <div className="each_feature">
+                <h3>Reputation</h3>
+                <div className="inner_feature">
+                    <Chart
+                        width={'300px'}
+                        height={'300px'}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart...</div>}
+                        data={alchl}
+                        options={{
+                            title: 'Alcohol&Drug People Percentage',
+                            is3D: true,
+                            colors: ['red', 'rgb(181, 6, 216)']
+                        }} />
+                </div>
+
+                <div className="inner_feature">
+                    <Chart
+                        width={'300px'}
+                        height={'300px'}
+                        chartType="PieChart"
+                        loader={<div>Loading Chart...</div>}
+                        data={homeless}
+                        options={{
+                            title: 'Homeless Percentage',
+                            is3D: true,
+                            colors: ['rgb(23, 193, 245)', 'rgb(235, 204, 33)']
+                        }} />
+                </div>
+                <Chart
+                    width={'300px'}
+                    height={'300px'}
+                    chartType="PieChart"
+                    loader={<div>Loading Chart...</div>}
+                    data={happiness}
+                    options={{
+                        title: 'Happiness Percentage',
+                        colors: ['rgb(17, 207, 11)', 'rgb(7, 163, 202)'],
+                        is3D: true,
+                    }} />
+
             </div>
         
-          <h3>Reputation</h3>
+          
           <h3>Transport</h3>
           <h3>Sentiment</h3>
         </Drawer>
