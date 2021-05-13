@@ -60,6 +60,12 @@ router.get("/", async function (req, res, next) {
   }, {});
 
   var infrastructure = sport.map(function (o) {
+    if (uni_ref[o.id] === undefined) {
+      uni_ref[o.id] = 0;
+    }
+    if (tafe_ref[o.id] === undefined) {
+      tafe_ref[o.id] = 0;
+    }
     return {
       id: o.id,
       sport: o.sport,
