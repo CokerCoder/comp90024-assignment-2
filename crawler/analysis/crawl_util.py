@@ -46,16 +46,6 @@ def crawl_by_loction(api,database,n = 100,):
                         })
 
 
-# Creat Date Data
-today = date.today()
-def creat_date_file(today):
-    datelist = [str(today - timedelta(days = i)) for i in range(50)]
-
-    with open('date.txt', 'w') as filehandle:
-        for date in datelist:
-            filehandle.write('%s\n' % date)
-
-    filehandle.close()
 
 
 # Read the start and end date
@@ -71,5 +61,4 @@ def read_and_delete_first_date():
     fout.close()
     return start,end
 
-creat_date_file(today) 
 

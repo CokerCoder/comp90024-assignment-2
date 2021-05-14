@@ -4,7 +4,6 @@ from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
 
-
 Greater_Melbourne_POLYGON = json.load(open('../data/Greater_Melbourne_LGA.json'))["features"]
 
 
