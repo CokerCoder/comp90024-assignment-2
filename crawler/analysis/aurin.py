@@ -231,7 +231,9 @@ def load_population():
         name = " ".join(i['properties']["lga_name"].split()[:-1]).upper() 
         if name in LGA:
             collected.append([name,i['properties']["tpop_2021"],i['properties']["tpop_2020"],i['properties']["tpop_2019"],
-                          i['properties']["tpop_2018"],i['properties']["tpop_2017"],i['properties']["tpop_2016"],                                        i['properties']["tpop_2015"],i['properties']["tpop_2014"],i['properties']["tpop_2013"],                                        i['properties']["tpop_2012"],i['properties']["tpop_2011"]])
+                          i['properties']["tpop_2018"],i['properties']["tpop_2017"],i['properties']["tpop_2016"],
+                           i['properties']["tpop_2015"],i['properties']["tpop_2014"],i['properties']["tpop_2013"],
+                           i['properties']["tpop_2012"],i['properties']["tpop_2011"]])
 
 
 
