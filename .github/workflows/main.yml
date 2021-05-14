@@ -26,4 +26,4 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Build the stack
-        run: docker-compose up -d
+        run: cd web && docker-compose up -d
