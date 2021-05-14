@@ -6,7 +6,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm cache clean --force && npm install --silent
+RUN npm install --silent
 
 COPY . /app
 EXPOSE 8000
