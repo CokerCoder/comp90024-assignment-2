@@ -3,29 +3,37 @@ version: '3'
 services:
 
     backend:
-        build: ./backend
+        restart: always
+        build: 
+            dockerfile: Dockerfile
+            context: ./backend
         image: "backend"
         environment:
             APP_SERVER_PORT: 8000
             COUCHDB_HOST: http://admin:admin@172.26.132.83:5984
-        networks:
-            - ccc-network
+        volumes: 
+            - /app/node_modules
+            - ./backend:/app
+        ports:
+            - '8000:8000'
 
     frontend:
-        build: ./frontend
+        build: 
+            dockerfile: Dockerfile
+            context: ./frontend
         image: "frontend"
         environment:
             REACT_APP_PORT: 4000
-        networks:
-            - ccc-network
+        volumes:
+            - /app/node_modules
+            - ./frontend:/app
+        links:
+            - backend
 
-    revproxy:
-        build: ./nginx
-        image: "nginx"
-        networks:
-            - ccc-network
+    nginx:
+        restart: always
+        build:
+            dockerfile: Dockerfile
+            context: ./nginx
         ports:
-            - "80:80"
-
-networks:
-    ccc-network:
+            - '80:80'
