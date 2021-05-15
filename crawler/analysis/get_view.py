@@ -1,13 +1,14 @@
 import json
 import nltk
 import couchdb
-from by_realtime.crawl_util import find_or_create_db
+from crawl_util import find_or_create_db
 from view_creator import ViewCreator
 from nltk.sentiment import SentimentIntensityAnalyzer
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+from tqdm import tqdm
 
-DATABASE = 'tweet_docs'
+DATABASE = 'all_doc'
 SERVER = couchdb.Server('http://admin:admin@172.26.132.83:5984/')
 database = find_or_create_db(SERVER, "sentiment")
 
@@ -28,7 +29,7 @@ def find_location(coor):
                 return suburb['properties']["vic_lga__3"]
     return None
 
-for doc in view.get_tweets():
+for doc in tqdm(view.get_tweets()):
 
     coor = [(doc.value["Coordinates"][0][0]+doc.value["Coordinates"][2][0])/2,\
             (doc.value["Coordinates"][0][1]+doc.value["Coordinates"][1][1])/2]
