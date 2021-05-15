@@ -13,7 +13,8 @@ var infrastructure = require("./routes/infrastructure");
 var sentiment = require("./routes/sentiment");
 var transport = require("./routes/transport");
 var reputation = require("./routes/reputation");
-
+var population = require("./routes/population");
+var entertainment = require("./routes/entertainment");
 var app = express();
 
 // view engine setup
@@ -35,7 +36,8 @@ app.use("/health", health);
 app.use("/infrastructure", infrastructure);
 app.use("/transport", transport);
 app.use("/reputation", reputation);
-
+app.use("/population", population);
+app.use("/entertainment", entertainment);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
