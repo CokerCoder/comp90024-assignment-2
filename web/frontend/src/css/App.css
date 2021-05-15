@@ -1,5 +1,5 @@
 body {
-  background-color: black;
+  background-color: white;
 }
 
 .project-name {
@@ -28,9 +28,3 @@ body {
   left: 70%;
 }
 
-
-h1, h2, h3 {
-  color: aliceblue;
-}
-
-  

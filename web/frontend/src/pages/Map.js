@@ -7,6 +7,8 @@ import {
   Popup,
   GeoJSON,
 } from "react-leaflet";
+import { useHistory } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 import Chart from "react-google-charts";
 import { Drawer } from "antd";
 import axios from "../commons/axios";
@@ -16,7 +18,10 @@ import "../css/Map.css";
 
 export default function Map(prop) {
 
+  let history = useHistory()
+
   const [visible, setVisible] = useState(false);
+  
   const [subName, setSubName] = useState(null);
   // Culture 
   const [languagePerc, setLanguagePerc] = useState([]);
@@ -25,6 +30,13 @@ export default function Map(prop) {
   const [insecurity, setInsecurity] = useState([]);
   // infras
   const [infras, setInfras] = useState([]);
+  // transport
+  const [transportData, setTransportData] = useState([]);
+  // entertainment
+  const [entertainmentData, setEntertainmentData] = useState([]);
+  // population
+  const [populationData, setPopulationData] = useState([]);
+
   // reputation
   const [alchl, setAlchl] = useState([]);
   const [happiness, setHappiness] = useState([]);
@@ -51,17 +63,38 @@ export default function Map(prop) {
         const _res = await axios.get("/reputation");
         localStorage.setItem("reputation", JSON.stringify(_res.data));
     })();
-    
+
+    (async () => {
+      const _res = await axios.get("/transport");
+      localStorage.setItem("transport", JSON.stringify(_res.data));
+    })();
+
+    (async () => {
+      const _res = await axios.get("/entertainment");
+      localStorage.setItem("entertainment", JSON.stringify(_res.data));
+    })();
+
+    (async () => {
+      const _res = await axios.get("/population");
+      localStorage.setItem("population", JSON.stringify(_res.data));
+    })();
+
   }, []);
 
   const onClose = () => {
     setVisible(false);
   };
 
+  const toOverView = () => (
+    history.push({
+      pathname:"/overview"
+    })
+  );
+
+
   var myStyle = {
     opacity: 0.1,
   };  
-
 
   const cultureFeature = (subName) => { 
     let culture = JSON.parse(localStorage.getItem("culture"));
@@ -83,9 +116,10 @@ export default function Map(prop) {
     let infrastructure = JSON.parse(localStorage.getItem("infrastructure"));
     let sport = infrastructure.find(x => x.id === subName).sport
     let uni = infrastructure.find(x => x.id === subName).uni
+    let school = infrastructure.find(x => x.id === subName).school
     let taft = infrastructure.find(x => x.id === subName).taft
-    setInfras([['Feature', 'Amount'], ['Sport venues', sport], ['University', uni], ['taft', taft]])
-    
+    let hospital = infrastructure.find(x => x.id === subName).hospital
+    setInfras([['Feature', 'Amount'], ['Sport venues', sport], ['University', uni], ['taft', taft], ["School", school], ["Hospital", hospital]])
   }
 
   const reputationFeature = (subName) => {
@@ -97,18 +131,41 @@ export default function Map(prop) {
     setAlchl([['People','Percentage'], ['Alcoholism', alchlData], ['Others', (1000-alchlData)]])
     setHappiness([['People','Percentage'], ['Happiness', happinessData], ['Unhappiness', (100-happinessData)]])
     setHomeless([['People','Percentage'], ['Homeless People', homelessData], ['Others', (1000-homelessData)]])
-    console.log(happinessData);
   }
 
+  const transportFeature = (subName) => {
+    let transport = JSON.parse(localStorage.getItem("transport"));
+    let bus = transport.find(x => x.id === subName).transports_bus
+    let train = transport.find(x => x.id === subName).transports_train
+    let tram = transport.find(x => x.id === subName).transports_tram
+    let skyBus = transport.find(x => x.id === subName).transports_sky_bus
+    let nightBus = transport.find(x => x.id === subName).transports_night_bus
+    setTransportData([['Feature', 'Amount'], ['Bus', bus], ['Train', train], ['Tram', tram], ["Sky Bus", skyBus], ["Night Bus", nightBus]])
+  }
+
+  const populationFeature = (subName) => {
+    let population = JSON.parse(localStorage.getItem("population"));
+    let values = population.find(x => x._id === subName)
+    let timeList = []
+    
+    for(let key in values){
+      if ((key != '_id') && (key != '_rev')){
+        timeList.push([key.slice(5, 9), values[key]])
+      }
+    }
+    timeList.push(['Year', 'population'])
+    setPopulationData(timeList.reverse())
+  }
 
   const whenClicked = (subName) => {
-    console.log(subName);
     setSubName(subName);
     setVisible(true);
     cultureFeature(subName);
     healthFeature(subName);
     infrastructureFeature(subName);
+    transportFeature(subName);
     reputationFeature(subName);
+    populationFeature(subName);
   }
 
   //function to show popup when hover
@@ -133,10 +190,9 @@ export default function Map(prop) {
   };
 
 
-
   return (
     <>
-    <MapContainer
+      <MapContainer
         center={[-37.813629, 144.963058]}
         zoom={18}
         scrollWheelZoom={true}
@@ -161,8 +217,8 @@ export default function Map(prop) {
           {/* Layer of marker */}
             <LayersControl.Overlay name="Overview">
                 <Marker
-                position={[-37.813629, 144.963058]}
-                iconUrl={"https://static.thenounproject.com/png/780108-200.png"}>
+                  position={[-37.813629, 144.963058]}
+                  iconUrl={"https://static.thenounproject.com/png/780108-200.png"}>
                 </Marker>
             </LayersControl.Overlay>
 
@@ -176,6 +232,10 @@ export default function Map(prop) {
         </LayersControl>
       </MapContainer>
 
+      <Button variant="dark" onClick={toOverView} className="overviewButton">
+        Overview
+      </Button>
+      
       <div className="drawer">
         <Drawer
           title={"Subcity Name: "+subName}
@@ -240,43 +300,55 @@ export default function Map(prop) {
                     data={infras}
                     options={{
                         chart: {
-                        title: 'Infrastructure',
-                        is3D: true,
-                        colors: ['rgb(238, 238, 38)', 'orange']
+                          title: 'Infrastructure',
                         },
                     }}
                     />
             </div>
 
             <div className="each_feature">
-                <h3>Reputation</h3>
-                <div className="inner_feature">
-                    <Chart
-                        width={'300px'}
-                        height={'300px'}
-                        chartType="PieChart"
-                        loader={<div>Loading Chart...</div>}
-                        data={alchl}
-                        options={{
-                            title: 'Alcohol&Drug People Percentage',
-                            is3D: true,
-                            colors: ['red', 'rgb(181, 6, 216)']
-                        }} />
-                </div>
+                <h3>Transport</h3>
+                <Chart
+                    width={'400px'}
+                    height={'300px'}
+                    chartType="PieChart"
+                    loader={<div>Loading Chart...</div>}
+                    data={transportData}
+                    options={{
+                        chart: {
+                          title: 'Transport',
+                        },
+                    }}
+                    />
+            </div>
 
-                <div className="inner_feature">
-                    <Chart
-                        width={'300px'}
-                        height={'300px'}
-                        chartType="PieChart"
-                        loader={<div>Loading Chart...</div>}
-                        data={homeless}
-                        options={{
-                            title: 'Homeless Percentage',
-                            is3D: true,
-                            colors: ['rgb(23, 193, 245)', 'rgb(235, 204, 33)']
-                        }} />
-                </div>
+            <div className="each_feature">
+              <h3>Reputation</h3>
+              <div className="inner_feature">
+                <Chart
+                  width={'300px'}
+                  height={'300px'}
+                  chartType="PieChart"
+                  loader={<div>Loading Chart...</div>}
+                  data={homeless}
+                  options={{
+                      title: 'Homeless Percentage',
+                      is3D: true,
+                      colors: ['rgb(23, 193, 245)', 'rgb(235, 204, 33)']
+                }} />
+                  {/* <Chart
+                      width={'300px'}
+                      height={'300px'}
+                      chartType="PieChart"
+                      loader={<div>Loading Chart...</div>}
+                      data={alchl}
+                      options={{
+                          title: 'Alcohol&Drug People Percentage',
+                          is3D: true,
+                          colors: ['red', 'rgb(181, 6, 216)']
+                      }} /> */}
+              </div>
+              <div className="inner_feature">
                 <Chart
                     width={'300px'}
                     height={'300px'}
@@ -288,7 +360,27 @@ export default function Map(prop) {
                         colors: ['rgb(17, 207, 11)', 'rgb(7, 163, 202)'],
                         is3D: true,
                     }} />
+              </div>
             </div>
+
+            <div className="each_feature">
+            <h3>Population</h3>
+              <Chart
+                width={'600px'}
+                height={'350px'}
+                chartType="LineChart"
+                loader={<div>Loading Chart...</div>}
+                data={populationData}
+                options={{
+                  hAxis: {
+                    title: 'Time',
+                  },
+                  vAxis: {
+                    title: 'Population',
+                  },
+                }}/>
+            </div>
+
         </Drawer>
       </div>
     </>

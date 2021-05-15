@@ -1,6 +1,14 @@
 h3 {
     color:black;
 }
+
+.overviewButton {
+  position: absolute;
+  top: 100px;
+  left: 15px;
+  padding: 10px;
+  z-index: 400;
+}
   
 .foo {
     float: left;
@@ -15,14 +23,6 @@ h3 {
   
   .dark_blue {
     background: rgb(23, 193, 245);
-  }
-
-  .yellow {
-    background:rgb(187, 13, 7);
-  }
-
-  .orange {
-    background:orange;
   }
 
 .each_feature {
