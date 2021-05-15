@@ -4,23 +4,28 @@ services:
 
     backend:
         build: ./backend
-        image: backend
+        image: "backend"
         environment:
             APP_SERVER_PORT: 8000
             COUCHDB_HOST: http://admin:admin@172.26.132.83:5984
-        ports:
-            - 8000:8000
-        command: npm run start
-
+        networks:
+            - ccc-network
 
     frontend:
         build: ./frontend
-        image: frontend
+        image: "frontend"
         environment:
             REACT_APP_PORT: 4000
+        networks:
+            - ccc-network
+
+    revproxy:
+        build: ./nginx
+        image: "nginx"
+        networks:
+            - ccc-network
         ports:
-            - 80:4000
-        stdin_open: true
-        links:
-            - backend
-        command: serve -p 4000 -s .
+            - "80:80"
+
+networks:
+    ccc-network:
