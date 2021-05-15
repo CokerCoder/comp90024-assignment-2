@@ -14,13 +14,13 @@
     dest: ~/.docker/config.json
 
 # Build Docker image for web frontend and web backend
-- name: Configure compose
-  become: yes
-  template:
-    src: "../template/docker-compose.yaml.j2"
-    dest: "/home/ubuntu/COMP90024/ccc-p2/web/docker-compose.yaml"
-    owner: "ubuntu"
-    group: "ubuntu"
+# - name: Configure compose
+#   become: yes
+#   template:
+#     src: "../template/docker-compose.yaml.j2"
+#     dest: "/home/ubuntu/COMP90024/ccc-p2/web/docker-compose.yaml"
+#     owner: "ubuntu"
+#     group: "ubuntu"
 
 # Run Docker compose to activate web frontend and web backend
 - name: Run docker compose
@@ -30,5 +30,5 @@
     pull: false
     build: yes
     state: present
-    remove_orphans: no
+    remove_orphans: yes
     recreate: always
