@@ -13,8 +13,6 @@ router.get("/", async function (req, res, next) {
       doc = doc.doc;
       let dict = {
         id: doc._id,
-        clients_that_recvd_alchl_drug_trtmnt_servs_per_1000_pop:
-          doc.clients_that_recvd_alchl_drug_trtmnt_servs_per_1000_pop,
         ppl_rated_their_cmty_good_vgood_for_cmty_and_sup_grps_perc:
           doc.ppl_rated_their_cmty_good_vgood_for_cmty_and_sup_grps_perc,
         homeless_ppl_est_per_1000_pop: doc.homeless_ppl_est_per_1000_pop,
