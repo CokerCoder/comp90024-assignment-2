@@ -51,7 +51,7 @@ services:
             APP_SERVER_PORT: 8000
             COUCHDB_HOST: http://admin:admin@172.26.132.83:5984
         ports:
-            - 8000:8000
+            - "8000:8000"
         command: npm run start
 
 
@@ -60,8 +60,8 @@ services:
         environment:
             REACT_APP_PORT: 4000
         ports:
-            - 80:4000
+            - "80:80"
         stdin_open: true
-        links:
-            - backend
-        command: serve -p 4000 -s .
+        # links:
+        #     - backend
+        # command: serve -p 4000 -s .
