@@ -13,6 +13,9 @@ print(view.count_tweets())
 
 count_dict = defaultdict(int)
 average_dict = defaultdict(list)
+positive_dict = defaultdict(int)
+negative_dict = defaultdict(int)
+neutral_dict = defaultdict(int)
 
 for doc in view.get_sentiment():
     # if doc.key not in database:
@@ -23,21 +26,36 @@ for doc in view.get_sentiment():
         # print(alpha_words)
     location = doc.value['Location']
     sentiment = doc.value['Sentiment']['compound']
+    if sentiment > 0:
+        positive_dict[location] += 1
+    elif sentiment == 0:
+        neutral_dict[location] += 1
+    else:
+        negative_dict[location] += 1
     count_dict[location] += 1
     average_dict[location].append(sentiment)
-
+    
 for location in count_dict.keys():
     sentiment_list = average_dict[location]
     count = count_dict[location]
     average = sum(sentiment_list)/len(sentiment_list)
+    positive = positive_dict[location]
+    negative = negative_dict[location]
+    neutral = neutral_dict[location]
     try:
         doc = database[location]
     except:
         database.save({'_id': location,
                         'count': count,
-                        'average': average
+                        'average': average,
+                        'positive': positive,
+                        'negative': negative,
+                        'neutral': neutral
                         })
     else:
         doc['count'] = count
         doc['average'] = average
+        doc['positive'] = positive
+        doc['negative'] = negative
+        doc['neutral'] =  neutral
         database[location] = doc
