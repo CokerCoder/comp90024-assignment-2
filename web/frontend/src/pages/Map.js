@@ -38,7 +38,6 @@ export default function Map(prop) {
   const [populationData, setPopulationData] = useState([]);
 
   // reputation
-  const [alchl, setAlchl] = useState([]);
   const [happiness, setHappiness] = useState([]);
   const [homeless, setHomeless] = useState([]);
   
@@ -79,6 +78,11 @@ export default function Map(prop) {
       localStorage.setItem("population", JSON.stringify(_res.data));
     })();
 
+    (async () => {
+      const _res = await axios.get("/sentiment");
+      localStorage.setItem("sentiment", JSON.stringify(_res.data));
+    })();
+
   }, []);
 
   const onClose = () => {
@@ -93,7 +97,7 @@ export default function Map(prop) {
 
 
   var myStyle = {
-    opacity: 0.1,
+    opacity: 0.3,
   };  
 
   const cultureFeature = (subName) => { 
@@ -124,11 +128,9 @@ export default function Map(prop) {
 
   const reputationFeature = (subName) => {
     let reputation = JSON.parse(localStorage.getItem("reputation"));
-    let alchlData = reputation.find(x => x.id === subName).clients_that_recvd_alchl_drug_trtmnt_servs_per_1000_pop
     let happinessData  = reputation.find(x => x.id === subName).ppl_rated_their_cmty_good_vgood_for_cmty_and_sup_grps_perc
     let homelessData  = reputation.find(x => x.id === subName).homeless_ppl_est_per_1000_pop
 
-    setAlchl([['People','Percentage'], ['Alcoholism', alchlData], ['Others', (1000-alchlData)]])
     setHappiness([['People','Percentage'], ['Happiness', happinessData], ['Unhappiness', (100-happinessData)]])
     setHomeless([['People','Percentage'], ['Homeless People', homelessData], ['Others', (1000-homelessData)]])
   }
@@ -149,7 +151,7 @@ export default function Map(prop) {
     let timeList = []
     
     for(let key in values){
-      if ((key != '_id') && (key != '_rev')){
+      if ((key !== '_id') && (key !== '_rev')){
         timeList.push([key.slice(5, 9), values[key]])
       }
     }
@@ -170,17 +172,64 @@ export default function Map(prop) {
 
   //function to show popup when hover
   const onEachSub = (feature, layer) => {
+
+    let sentiment = JSON.parse(localStorage.getItem("sentiment"));
     const subName = feature.properties.vic_lga__3;
+    let opacity = 0;
+    let color = null;
+
+    let sentimentValue = sentiment.find(x => x.id === subName)
+    if (sentimentValue !== undefined){
+      opacity = sentimentValue.average
+      if ((opacity >= -1 ) && (opacity < -0.8)) {
+        color = "rgb(49, 54, 149)"
+      }
+      if ((opacity >= -0.8) && (opacity < -0.6)) {
+        color =  "rgb(69, 117, 180)"
+      }
+      if ((opacity >= -0.6 ) && (opacity < -0.4)) {
+        color =  "rgb(116, 173, 209)"
+      }
+      if ((opacity >= -0.4) && (opacity < -0.2)) {
+        color =  "rgb(171, 217, 233)"
+      }
+      if ((opacity >= -0.2) && (opacity < -0.0)) {
+        color =  "rgb(224, 243, 248)"
+      }
+      if ((opacity >= 0) && (opacity < 0.2)) {
+        color =  "rgb(254, 224, 144)"
+      }
+      if ((opacity >= 0.2) && (opacity < 0.4)) {
+        color =  "rgb(253, 174, 97)"
+      }
+      if ((opacity >= 0.4) && (opacity < 0.6)) {
+        color =  "rgb(224, 109, 67)"
+      }
+      if ((opacity >= 0.6) && (opacity < 0.8)) {
+        color =  "rgb(215, 48, 39)"
+      }
+      if ((opacity >= 0.8) && (opacity < 1)) {
+        color =  "rgb(165, 0, 38)"
+      }
+    }
+    
+    console.log(opacity)
+
+    layer.setStyle({
+      fillOpacity: 0.3,
+      color: color,
+    });
+
     layer.on("mouseover", function (e) {
       layer.bindPopup(subName).openPopup(); // here add openPopup()
       layer.setStyle({
-        fillOpacity: 0.6,
+        fillOpacity: 0.8,
       });
     });
 
     layer.on("mouseout", function (e) {
       layer.setStyle({
-        fillOpacity: 0.1,
+        fillOpacity: 0.3,
       });
     });
 
@@ -194,20 +243,24 @@ export default function Map(prop) {
     <>
       <MapContainer
         center={[-37.813629, 144.963058]}
-        zoom={18}
+        zoom={10}
         scrollWheelZoom={true}
         style={{ height: "100vh" }}>
         <LayersControl position="topright">
-            <LayersControl.BaseLayer checked name="OpenStreetMap.NormalMode">
-                <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-            </LayersControl.BaseLayer>
-            <LayersControl.BaseLayer name="OpenStreetMap.BlackAndWhite">
+
+            <LayersControl.BaseLayer checked name="OpenStreetMap.BlackAndWhite">
                 <TileLayer
                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"/>
             </LayersControl.BaseLayer>
+          
+            <LayersControl.BaseLayer name="OpenStreetMap.NormalMode">
+                <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+            </LayersControl.BaseLayer>
+            
+            
             <LayersControl.BaseLayer name="OpenStreetMap.DarkMode">
                 <TileLayer
                     attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
@@ -215,15 +268,15 @@ export default function Map(prop) {
             </LayersControl.BaseLayer>
 
           {/* Layer of marker */}
-            <LayersControl.Overlay name="Overview">
+            {/* <LayersControl.Overlay name="Overview">
                 <Marker
                   position={[-37.813629, 144.963058]}
                   iconUrl={"https://static.thenounproject.com/png/780108-200.png"}>
                 </Marker>
-            </LayersControl.Overlay>
+            </LayersControl.Overlay> */}
 
           {/* Layer of hotmap */}
-            <LayersControl.Overlay name="Feature group">
+            <LayersControl.Overlay checked name="Feature group">
                 <GeoJSON
                 data={polygonData.features}
                 style={myStyle}

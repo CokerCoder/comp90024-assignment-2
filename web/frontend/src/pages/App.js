@@ -20,10 +20,10 @@ function App() {
   return (
     <>
       <div className="project-name">
-        <img src={uni_image} className="uni_image" />;
+        <img src={uni_image} className="uni_image" />
         <h1>COMP90024 CCC Project-2</h1>
       </div>
-      <img src={mel_image} className="mel_image" />;
+      <img src={mel_image} className="mel_image" />
       <div className="start-area">
         <h2>Infrastructure VS Sentiment scores</h2>
         <h3>Presented by Group-26 </h3>

@@ -1,4 +1,21 @@
+.button {
+    margin-bottom: 2%;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+.chart-section {
+    display: block;
+    position:relative;
+	left:27%;
+    margin-top: 3%;
+}
 
-.chartSection {
-    left: 50%;
+.pie-chart-section {
+    display: inline-block;
+    width: 33%;
+}
+
+.transport-title {
+    margin-top: 3%;
+    margin-left: 2%;
 }
