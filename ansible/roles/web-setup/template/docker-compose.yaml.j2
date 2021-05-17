@@ -4,7 +4,6 @@ services:
 
     backend:
         build: ./backend
-        image: backend
         environment:
             APP_SERVER_PORT: {{ APP_SERVER_PORT }}
             COUCHDB_HOST: {{ COUCHDB_HOST }}
@@ -12,15 +11,10 @@ services:
             - {{ APP_SERVER_PORT }}:{{ APP_SERVER_PORT }}
         command: npm run start
         
-    
     frontend:
         build: ./frontend
-        image: frontend
         environment:
             REACT_APP_PORT: {{ REACT_APP_PORT }}
         ports:
-            - 80:{{ REACT_APP_PORT }}
+            - 80:80
         stdin_open: true
-        links:
-            - backend
-        command: serve -p 4000 -s .
