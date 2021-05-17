@@ -5,19 +5,20 @@ body {
 .project-name {
   display: inline-block;
   position: absolute;
+  text-align: center;
   top: 10%;
   left: 10%;
 }
 
 .uni_image {
-  height: 60px;
-  width: 60px;
+  height: 200px;
+  width: 200px;
 }
 
 .mel_image {
   position: absolute;
   top: 25%;
-  left: 35%;
+  left: 30%;
   height: 550px;
   width: 550px;
 }
