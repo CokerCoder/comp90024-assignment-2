@@ -4,7 +4,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package*.json ./
 RUN npm ci --silent
 COPY . .
-RUN npm run build
+RUN npm run build-prod
 
 FROM nginx:1.19.10-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
