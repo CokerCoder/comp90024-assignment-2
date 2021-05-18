@@ -156,7 +156,7 @@ export default function OverView() {
                     data={alchlAnddrugs}
                     options={{
                         chart: {
-                        title: 'The number of people who recive Alchl Andd rugs per 1000 people of each sub city',
+                        title: 'The number of people who receive Alcohol & drugs per 1000 people of each sub city',
                         },}}/>
             </div>
             <h2 className="transport-title">Transport</h2>

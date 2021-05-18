@@ -217,18 +217,6 @@ export default function Map(prop) {
     let sentimentValue = sentiment.find((x) => x.id === subName);
     if (sentimentValue !== undefined) {
       opacity = sentimentValue.average;
-      // if ((opacity >= -1 ) && (opacity < -0.8)) {
-      //   color = "rgb(49, 54, 149)"
-      // }
-      // if ((opacity >= -0.8) && (opacity < -0.6)) {
-      //   color =  "rgb(69, 117, 180)"
-      // }
-      // if ((opacity >= -0.6 ) && (opacity < -0.4)) {
-      //   color =  "rgb(116, 173, 209)"
-      // }
-      // if ((opacity >= -0.4) && (opacity < -0.2)) {
-      //   color =  "rgb(171, 217, 233)"
-      // }
       if (opacity < 0) {
         color = "rgb(224, 243, 248)";
       }
@@ -253,12 +241,6 @@ export default function Map(prop) {
       if (opacity >= 0.3 && opacity <= 1) {
         color = "rgb(165, 0, 38)";
       }
-      // if (opacity >= 0.6 && opacity < 0.8) {
-      //   color = "rgb(215, 48, 39)";
-      // }
-      // if (opacity >= 0.8 && opacity < 1) {
-      //   color = "rgb(165, 0, 38)";
-      // }
     }
 
     console.log(opacity);
@@ -315,14 +297,6 @@ export default function Map(prop) {
               url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png"
             />
           </LayersControl.BaseLayer>
-
-          {/* Layer of marker */}
-          {/* <LayersControl.Overlay name="Overview">
-                <Marker
-                  position={[-37.813629, 144.963058]}
-                  iconUrl={"https://static.thenounproject.com/png/780108-200.png"}>
-                </Marker>
-            </LayersControl.Overlay> */}
 
           {/* Layer of hotmap */}
           <LayersControl.Overlay checked name="Feature group">
@@ -381,7 +355,7 @@ export default function Map(prop) {
           </div>
 
           <div className="each_feature">
-            <h3>Health</h3>
+            <h3>Food safety</h3>
             <Chart
               width={"300px"}
               height={"300px"}
