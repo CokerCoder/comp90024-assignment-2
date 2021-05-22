@@ -327,7 +327,7 @@ export default function Map(prop) {
             <h3>Culture</h3>
             <div className="inner_feature">
               <Chart
-                width={"300px"}
+                width={"400px"}
                 height={"300px"}
                 chartType="PieChart"
                 loader={<div>Loading Chart...</div>}
@@ -338,10 +338,10 @@ export default function Map(prop) {
                 }}
               />
             </div>
-
+            <br />
             <div className="inner_feature">
               <Chart
-                width={"300px"}
+                width={"400px"}
                 height={"300px"}
                 chartType="PieChart"
                 loader={<div>Loading Chart...</div>}
@@ -357,7 +357,7 @@ export default function Map(prop) {
           <div className="each_feature">
             <h3>Food safety</h3>
             <Chart
-              width={"300px"}
+              width={"400px"}
               height={"300px"}
               chartType="PieChart"
               loader={<div>Loading Chart...</div>}
@@ -388,25 +388,45 @@ export default function Map(prop) {
 
           <div className="each_feature">
             <h3>Transport</h3>
-            <Chart
-              width={"400px"}
-              height={"300px"}
-              chartType="PieChart"
-              loader={<div>Loading Chart...</div>}
-              data={transportData}
-              options={{
-                chart: {
-                  title: "Transport",
-                },
-              }}
-            />
+            <div className="inner_feature">
+              <Chart
+                width={"400px"}
+                height={"300px"}
+                chartType="PieChart"
+                loader={<div>Loading Chart...</div>}
+                data={transportData}
+                options={{
+                  chart: {
+                    title: "Transport",
+                  },
+                }}
+              />
+            </div>
+            <br />
+            <div className="inner_feature">
+              <Chart
+                width={"500px"}
+                height={"300px"}
+                chartType="Bar"
+                loader={<div>Loading Chart...</div>}
+                data={transportData}
+                options={{
+                  hAxis: {
+                    title: "Number",
+                  },
+                  vAxis: {
+                    title: "Bus Type",
+                  },
+                }}
+              />
+            </div>
           </div>
 
           <div className="each_feature">
             <h3>Reputation</h3>
             <div className="inner_feature">
               <Chart
-                width={"300px"}
+                width={"400px"}
                 height={"300px"}
                 chartType="PieChart"
                 loader={<div>Loading Chart...</div>}
@@ -429,9 +449,10 @@ export default function Map(prop) {
                           colors: ['red', 'rgb(181, 6, 216)']
                       }} /> */}
             </div>
+            <br />
             <div className="inner_feature">
               <Chart
-                width={"300px"}
+                width={"410px"}
                 height={"300px"}
                 chartType="PieChart"
                 loader={<div>Loading Chart...</div>}
@@ -449,7 +470,7 @@ export default function Map(prop) {
             <h3>Population</h3>
             <Chart
               width={"600px"}
-              height={"350px"}
+              height={"400px"}
               chartType="LineChart"
               loader={<div>Loading Chart...</div>}
               data={populationData}

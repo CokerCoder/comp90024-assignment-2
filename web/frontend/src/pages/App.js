@@ -28,7 +28,7 @@ function App() {
         <h2>Infrastructure VS Sentiment Scores</h2>
         <h3>Group-26</h3>
         <br></br>
-        <Button variant="success" onClick={toMap}>
+        <Button type="primary" className="button-color-unimelb" onClick={toMap}>
           Start Explore
         </Button>
       </div>
