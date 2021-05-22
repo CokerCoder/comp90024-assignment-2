@@ -8,6 +8,8 @@ h3 {
   left: 15px;
   padding: 10px;
   z-index: 400;
+  background-color: #094183;
+  border-color: #094183
 }
   
 .foo {
@@ -33,3 +35,4 @@ h3 {
     display: inline-block;
     width: 50%;
 }
+

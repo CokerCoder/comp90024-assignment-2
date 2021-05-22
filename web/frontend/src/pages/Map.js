@@ -15,6 +15,7 @@ import axios from "../commons/axios";
 import * as polygonData from "../data/mel_LGA.json";
 import "antd/lib/drawer/style/index.css";
 import "../css/Map.css";
+import Legend from "./Legend";
 
 export default function Map(prop) {
   let history = useHistory();
@@ -22,6 +23,11 @@ export default function Map(prop) {
   const [visible, setVisible] = useState(false);
 
   const [subName, setSubName] = useState(null);
+  const [sentimentScore, setSentimentScore] = useState(null);
+  
+
+  // Sentiment
+  const [SentimentCount, setSentimentCount] = useState([]);
   // Culture
   const [languagePerc, setLanguagePerc] = useState([]);
   const [born, setBorn] = useState([]);
@@ -31,8 +37,6 @@ export default function Map(prop) {
   const [infras, setInfras] = useState([]);
   // transport
   const [transportData, setTransportData] = useState([]);
-  // entertainment
-  const [entertainmentData, setEntertainmentData] = useState([]);
   // population
   const [populationData, setPopulationData] = useState([]);
 
@@ -41,6 +45,7 @@ export default function Map(prop) {
   const [homeless, setHomeless] = useState([]);
 
   useEffect(() => {
+
     (async () => {
       const _res = await axios.get("/culture");
       localStorage.setItem("culture", JSON.stringify(_res.data));
@@ -67,11 +72,6 @@ export default function Map(prop) {
     })();
 
     (async () => {
-      const _res = await axios.get("/entertainment");
-      localStorage.setItem("entertainment", JSON.stringify(_res.data));
-    })();
-
-    (async () => {
       const _res = await axios.get("/population");
       localStorage.setItem("population", JSON.stringify(_res.data));
     })();
@@ -94,6 +94,21 @@ export default function Map(prop) {
   var myStyle = {
     opacity: 0.3,
   };
+
+  const setSentiment = (subName) => {
+    let sentiment = JSON.parse(localStorage.getItem("sentiment"));
+    let eachSub = sentiment.find(
+      (x) => x.id === subName
+    )
+
+    setSentimentCount([
+      ["Sentiment Count", "Percentage"],
+      ["Positive", eachSub['positive']],
+      ["Negative", eachSub['negative']],
+      ["Neutral", eachSub['neutral']],
+    ]);
+
+  }
 
   const cultureFeature = (subName) => {
     let culture = JSON.parse(localStorage.getItem("culture"));
@@ -196,9 +211,11 @@ export default function Map(prop) {
     setPopulationData(timeList.reverse());
   };
 
-  const whenClicked = (subName) => {
+  const whenClicked = (subName, sentimentValue) => {
     setSubName(subName);
+    setSentimentScore(sentimentValue);
     setVisible(true);
+    setSentiment(subName)
     cultureFeature(subName);
     healthFeature(subName);
     infrastructureFeature(subName);
@@ -207,51 +224,85 @@ export default function Map(prop) {
     populationFeature(subName);
   };
 
-  //function to show popup when hover
-  const onEachSub = (feature, layer) => {
-    let sentiment = JSON.parse(localStorage.getItem("sentiment"));
+  const onEachSubPositive = (feature, layer) => {
     const subName = feature.properties.vic_lga__3;
-    let opacity = 0;
-    let color = null;
+    let opacity = getCount("Positive", subName)
 
+    let color = null;
+    if (opacity >= 0.34 && opacity < 0.4) {
+      color = "rgb(254, 224, 144)";
+    }
+    if (opacity >= 0.4 && opacity < 0.45) {
+      color = "rgb(244, 109, 67)";
+    }
+    if (opacity >= 0.45 && opacity < 0.5) {
+      color = "rgb(215, 48, 39)";
+    }
+    if (opacity >= 0.5 && opacity < 0.6) {
+      color = "rgb(165, 0, 38)";
+    }
+    fillColor(subName, opacity, color, layer, "Positive")
+  }
+
+  const onEachSubNegative = (feature, layer) => {
+    const subName = feature.properties.vic_lga__3;
+    let opacity = getCount("Negative", subName)
+
+    let color = null;
+    console.log(opacity)
+    if (opacity >= 0.10 && opacity < 0.13) {
+      color = "rgb(254, 224, 144)";
+    }
+    if (opacity >= 0.13 && opacity < 0.17) {
+      color = "rgb(253, 174, 97)";
+    }
+    if (opacity >= 0.17 && opacity < 0.21) {
+      color = "rgb(244, 109, 67)";
+    }
+    if (opacity >= 0.21 && opacity < 0.26) {
+      color = "rgb(215, 48, 39)";
+    }
+    fillColor(subName, opacity, color, layer, "Negative")
+  }
+
+
+  const getCount = (name, subName) => {
+    let sentiment = JSON.parse(localStorage.getItem("sentiment"));
     let sentimentValue = sentiment.find((x) => x.id === subName);
-    if (sentimentValue !== undefined) {
-      opacity = sentimentValue.average;
-      if (opacity < 0) {
-        color = "rgb(224, 243, 248)";
-      }
-      if (opacity >= 0 && opacity < 0.05) {
-        color = "rgb(255, 255, 191)";
-      }
-      if (opacity >= 0.05 && opacity < 0.1) {
-        color = "rgb(254, 224, 144)";
-      }
-      if (opacity >= 0.1 && opacity < 0.15) {
-        color = "rgb(253, 174, 97)";
-      }
-      if (opacity >= 0.15 && opacity < 0.2) {
-        color = "rgb(244, 109, 67)";
-      }
-      if (opacity >= 0.2 && opacity < 0.25) {
-        color = "rgb(215, 48, 39)";
-      }
-      if (opacity >= 0.25 && opacity < 0.3) {
-        color = "rgb(188, 0, 44)";
-      }
-      if (opacity >= 0.3 && opacity <= 1) {
-        color = "rgb(165, 0, 38)";
-      }
+    let value = 0;
+
+    if (name === "Positive"){
+      value = sentimentValue.positive;
     }
 
-    console.log(opacity);
+    if (name === "Negative"){
+      value = sentimentValue.negative;
+    }
 
+    let total = sentimentValue.count
+    let opacity = value/total
+
+    return opacity
+  }
+
+  const fillColor = (subName, perc, color, layer, type) => {
     layer.setStyle({
       fillOpacity: 0.3,
       color: color,
     });
 
     layer.on("mouseover", function (e) {
-      layer.bindPopup(subName).openPopup(); // here add openPopup()
+      if (type ===  "Score"){
+        layer.bindPopup(subName +" Sentiment average Score: "+ perc).openPopup(); // here add openPopup()
+      }
+      if (type ===  "Positive"){
+        layer.bindPopup(subName +" Positive count percentage: "+ perc).openPopup(); // here add openPopup()
+      }
+
+      if (type ===  "Negative"){
+        layer.bindPopup(subName +" Negative count percentage: "+ perc).openPopup(); // here add openPopup()
+      }
+      
       layer.setStyle({
         fillOpacity: 0.8,
       });
@@ -262,12 +313,49 @@ export default function Map(prop) {
         fillOpacity: 0.3,
       });
     });
+  }
+
+  //function to show popup when hover
+  const onEachSub = (feature, layer) => {
+    let sentiment = JSON.parse(localStorage.getItem("sentiment"));
+    const subName = feature.properties.vic_lga__3;
+    let opacity = 0;
+    let color = null;
+ 
+    let sentimentValue = sentiment.find((x) => x.id === subName);
+    opacity = sentimentValue.average;
+
+    if (opacity < 0) {
+      color = "rgb(224, 243, 248)";
+    }
+    if (opacity >= 0 && opacity < 0.05) {
+      color = "rgb(255, 255, 191)";
+    }
+    if (opacity >= 0.05 && opacity < 0.1) {
+      color = "rgb(254, 224, 144)";
+    }
+    if (opacity >= 0.1 && opacity < 0.15) {
+      color = "rgb(253, 174, 97)";
+    }
+    if (opacity >= 0.15 && opacity < 0.2) {
+      color = "rgb(244, 109, 67)";
+    }
+    if (opacity >= 0.2 && opacity < 0.25) {
+      color = "rgb(215, 48, 39)";
+    }
+    if (opacity >= 0.25 && opacity < 0.3) {
+      color = "rgb(188, 0, 44)";
+    }
+    if (opacity >= 0.3 && opacity <= 1) {
+      color = "rgb(165, 0, 38)";
+    }
+    fillColor(subName, opacity, color, layer, "Score")
 
     layer.on({
-      click: () => whenClicked(subName),
+      click: () => whenClicked(subName, opacity),
     });
   };
-
+  
   return (
     <>
       <MapContainer
@@ -299,30 +387,61 @@ export default function Map(prop) {
           </LayersControl.BaseLayer>
 
           {/* Layer of hotmap */}
-          <LayersControl.Overlay checked name="Feature group">
+          <LayersControl.Overlay checked name="Sentiment Score">
             <GeoJSON
               data={polygonData.features}
               style={myStyle}
               onEachFeature={onEachSub}
             />
+            <Legend />
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="Sentiment Positive">
+            <GeoJSON
+              data={polygonData.features}
+              style={myStyle}
+              onEachFeature={onEachSubPositive}
+            />
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="Sentiment Negative">
+            <GeoJSON
+              data={polygonData.features}
+              style={myStyle}
+              onEachFeature={onEachSubNegative}
+            />
           </LayersControl.Overlay>
         </LayersControl>
       </MapContainer>
-
-      <Button variant="dark" onClick={toOverView} className="overviewButton">
+      
+      <Button variant="primary" onClick={toOverView} className="overviewButton">
         Overview
       </Button>
-
       <div className="drawer">
         <Drawer
           title={"Subcity Name: " + subName}
           viewport
-          width={580}
+          width={630}
           placement="right"
           closable={false}
           onClose={onClose}
           visible={visible}
         >
+          <div className="each_feature">
+            <h3>Sentiment</h3>
+            <p>{"Sentiment Scores: " + sentimentScore}</p>
+            <Chart
+              width={"400px"}
+              height={"300px"}
+              chartType="PieChart"
+              loader={<div>Loading Chart...</div>}
+              data={SentimentCount}
+              options={{
+                title: "Sentiment Count",
+                is3D: true,
+                // colors: ["rgb(238, 238, 38)", "orange"],
+              }}
+            />
+          </div>
+
           <div className="each_feature">
             <h3>Culture</h3>
             <div className="inner_feature">

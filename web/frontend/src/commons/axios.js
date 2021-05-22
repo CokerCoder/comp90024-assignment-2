@@ -4,8 +4,7 @@ const devEnvironment = process.env.REACT_APP_ENDPOINT;
 
 const axios = baseUrl => {
     const instance = _axios.create({
-        baseURL: devEnvironment,
-        timeout: 20000,
+        baseURL: devEnvironment
     });
     return instance;
 };

@@ -7,11 +7,13 @@ import "../css/OverView.css";
 
 export default function OverView() {
   const [sentimentScore, setSentimentScore] = useState([]);
+  const [sentimentCount, setSentimentCount] = useState([]);
   const [happinessScore, setHappinessScore] = useState([]);
-  const [alchlAnddrugs, setAlchlAnddrugs] = useState([]);
+  const [entertainmentData, setEntertainmentData] = useState([]);
   const [trainsData, setTrainsData] = useState([]);
   const [tramsData, setTramsData] = useState([]);
   const [busData, setBusData] = useState([]);
+  const [travelTime, setTravelTime] = useState([]);
 
   let history = useHistory();
 
@@ -59,9 +61,18 @@ export default function OverView() {
     let trainList = [];
     let tramList = [];
     let busList = [];
+    let travelTimeList = [];
+    transport.sort(
+        
+        sortByProperty(
+            "travel_time_to_melbourne_minutes"
+        )
+    );
+
     trainList.push(["Sub City", "Number of Trains"]);
     tramList.push(["Sub City", "Number of Trams"]);
     busList.push(["Sub City", "Number of Bus"]);
+    travelTimeList.push(["Sub City", "Travel Time per minutes"]);
     for (let index in transport) {
       trainList.push([
         transport[index]["id"],
@@ -75,28 +86,40 @@ export default function OverView() {
         transport[index]["id"],
         transport[index]["transports_bus"],
       ]);
+
+      travelTimeList.push([
+        transport[index]["id"],
+        transport[index]["travel_time_to_melbourne_minutes"],
+      ])
     }
     setTrainsData(trainList);
     setTramsData(tramList);
     setBusData(busList);
+    setTravelTime(travelTimeList);
   };
 
   const entertainmentFeature = () => {
     let entertainment = JSON.parse(localStorage.getItem("entertainment"));
-    let alchlAnddrugsList = [];
-    alchlAnddrugsList.push(["Sub City", "per 1000 people"]);
-    entertainment.sort(
-      sortByProperty("clients_that_recvd_alchl_drug_trtmnt_servs_per_1000_pop")
-    );
+
+    let entertainmentList = []
+    entertainmentList.push(["Sub City", "Gambling", "Wagering", "Liquor Place (value needs to *100)"]);
+
     for (let index in entertainment) {
-      alchlAnddrugsList.push([
+      entertainmentList.push([
         entertainment[index]["id"],
         entertainment[index][
-          "clients_that_recvd_alchl_drug_trtmnt_servs_per_1000_pop"
+          "entertainment_gambling"
         ],
+        entertainment[index][
+          "entertainment_wagering"
+        ], 
+        entertainment[index][
+          "entertainment_liquor"
+        ] / 100,
       ]);
     }
-    setAlchlAnddrugs(alchlAnddrugsList);
+    console.log(entertainmentList)
+    setEntertainmentData(entertainmentList);
   };
 
   const reputationFeature = () => {
@@ -122,24 +145,32 @@ export default function OverView() {
   const sentimentFeature = () => {
     let sentiment = JSON.parse(localStorage.getItem("sentiment"));
     let sentimentList = [];
+    let sentimentCount = [];
+
     sentimentList.push(["Sub City", "Sentiment score"]);
+    sentimentCount.push(["Sub City", "Positive", "Negative", "Neutral"])
+
     sentiment.sort(sortByProperty("average"));
+
     for (let index in sentiment) {
       sentimentList.push([sentiment[index]["id"], sentiment[index]["average"]]);
+      sentimentCount.push([sentiment[index]["id"], sentiment[index]["positive"], sentiment[index]["negative"], sentiment[index]["neutral"]]);
     }
     setSentimentScore(sentimentList);
+    setSentimentCount(sentimentCount);
   };
 
   return (
     <>
-      <Button variant="dark" onClick={toMap} className="button">
+      <Button variant="primary" onClick={toMap} className="button">
         Back to main map
       </Button>
       <div className="chart-section">
-        <h2>Sentiment score</h2>
+      
+        <h2>Sentiment</h2>
         <Chart
           width={"1000px"}
-          height={"500px"}
+          height={"400px"}
           chartType="Bar"
           loader={<div>Loading Chart...</div>}
           data={sentimentScore}
@@ -149,13 +180,30 @@ export default function OverView() {
             },
           }}
         />
+        <Chart
+            width={'1000px'}
+            height={'600px'}
+            chartType="BarChart"
+            loader={<div>Loading Chart</div>}
+            data={sentimentCount}
+            options={{
+                title: 'The Sentiment count of each sub city',
+                chartArea: { width: '50%' },
+                isStacked: true,
+                hAxis: {
+                    title: 'Total Count',
+                },
+                vAxis: {
+                    title: 'Sub City',
+                },
+            }}
+            />
       </div>
 
       <div className="chart-section">
-        <h2>Happiness score</h2>
         <Chart
           width={"1000px"}
-          height={"500px"}
+          height={"400px"}
           chartType="Bar"
           loader={<div>Loading Chart...</div>}
           data={happinessScore}
@@ -168,22 +216,22 @@ export default function OverView() {
       </div>
 
       <div className="chart-section">
-        <h2>Alcohol And Drugs</h2>
+        <h2>Transport</h2>
         <Chart
           width={"1000px"}
-          height={"500px"}
+          height={"400px"}
           chartType="Bar"
           loader={<div>Loading Chart...</div>}
-          data={alchlAnddrugs}
+          data={travelTime}
           options={{
             chart: {
               title:
-                "The number of people who receive Alcohol & Drugs per 1000 people of each sub city",
+                "Travel Time to Melbourne in minutes",
             },
           }}
         />
       </div>
-      <h2 className="transport-title">Transport</h2>
+
       <div className="pie-chart-section">
         <Chart
           width={"700px"}
@@ -222,6 +270,26 @@ export default function OverView() {
           }}
         />
       </div>
+
+      <div className="chart-section">
+        <h2>Entertainment</h2>
+        <Chart
+          width={"1000px"}
+          height={"400px"}
+          chartType="LineChart"
+          loader={<div>Loading Chart...</div>}
+          data={entertainmentData}
+          options={{
+            hAxis: {
+              title: 'Sub City',
+            },
+            vAxis: {
+              title: 'Entertainment Item',
+            }
+          }}
+        />
+      </div>
+
     </>
   );
 }
