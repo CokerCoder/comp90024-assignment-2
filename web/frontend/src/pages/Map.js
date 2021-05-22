@@ -249,7 +249,6 @@ export default function Map(prop) {
     let opacity = getCount("Negative", subName)
 
     let color = null;
-    console.log(opacity)
     if (opacity >= 0.10 && opacity < 0.13) {
       color = "rgb(254, 224, 144)";
     }

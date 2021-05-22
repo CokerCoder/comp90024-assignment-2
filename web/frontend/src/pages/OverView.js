@@ -118,7 +118,6 @@ export default function OverView() {
         ] / 100,
       ]);
     }
-    console.log(entertainmentList)
     setEntertainmentData(entertainmentList);
   };
 
