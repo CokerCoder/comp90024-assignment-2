@@ -15,6 +15,9 @@ router.get("/", async function (req, res, next) {
         id: doc._id,
         count: doc.count,
         average: doc.average,
+        positive: doc.positive,
+        negative: doc.negative,
+        neutral: doc.neutral,
       };
       stats.push(dict);
     });
