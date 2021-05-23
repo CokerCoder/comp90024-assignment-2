@@ -16,7 +16,11 @@ The frontend website is built using ReactJS, showing an interactive map of Great
 Use the package manager [npm](https://www.npmjs.com/) to install the frontend locally.
 
 ```bash
-cd web/frontend && npm install
+cd web/frontend npm install
+```
+
+```bash
+npm install
 ```
 
 ## Usage
