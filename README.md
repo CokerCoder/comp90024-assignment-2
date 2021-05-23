@@ -4,4 +4,6 @@ Team Members:
 
 - Yunfei Jing - 987784
 - Haoyuan Yu - 988290
--
+- Youran Zhou - 
+- Liang Min - 
+- Tianze Liu 987969
