@@ -290,16 +290,18 @@ export default function Map(prop) {
       color: color,
     });
 
+    let _perc = Number((perc).toFixed(3))
+
     layer.on("mouseover", function (e) {
       if (type ===  "Score"){
-        layer.bindPopup(subName +" Sentiment average Score: "+ perc).openPopup(); // here add openPopup()
+        layer.bindPopup(subName +" Sentiment average Score: "+ _perc).openPopup(); // here add openPopup()
       }
       if (type ===  "Positive"){
-        layer.bindPopup(subName +" Positive count percentage: "+ perc).openPopup(); // here add openPopup()
+        layer.bindPopup(subName +" Positive count percentage: "+ _perc).openPopup(); // here add openPopup()
       }
 
       if (type ===  "Negative"){
-        layer.bindPopup(subName +" Negative count percentage: "+ perc).openPopup(); // here add openPopup()
+        layer.bindPopup(subName +" Negative count percentage: "+ _perc).openPopup(); // here add openPopup()
       }
       
       layer.setStyle({
