@@ -1,3 +1,16 @@
+"""
+COMP90024-Cluster and Cloud Computing Assignment 2
+Team Group 26
+
+Yunfei Jing (987784) jinyj@student.unimelb.edu.au
+Tianze Liu (987969) tianze@student.unimelb.edu.au
+Liang Min(981061) lmmin@student.unimelb.edu.au
+Youran Zhou(991504) youran@student.unimelb.edu.au
+Haoyuan Yu (988290) haoyuany@student.unimelb.edu.au
+
+The Realtime Tweets harvester 
+"""
+
 import tweepy   
 import json
 import datetime
@@ -32,7 +45,7 @@ class MyStreamListener(tweepy.StreamListener):
 
             print("Storing 1 tweet...")
             #print(json_tweet)
-            #database.save({"doc":json_tweet})
+            # Duplication Handling
             if str(tweet["id"]) not in database:
                 database.save({'_id':str(tweet["id"]),
                            'created_at': tweet['created_at'],
@@ -43,6 +56,7 @@ class MyStreamListener(tweepy.StreamListener):
                             "Place_coordinates":tweet["place"]["bounding_box"]['coordinates'][0]
                            })
 
+    # Error Handling
     def on_error(self, status_code):
         print(status_code)
 
@@ -53,8 +67,6 @@ class MyStreamListener(tweepy.StreamListener):
 
 
 print("Connect to Server...")
-#database = create_database(server)
-#database = crawl_util.find_or_create_db(server,"tweet_docs")
 database = crawl_util.find_or_create_db(server,"tweet_docs_instance")
 
 
@@ -62,7 +74,9 @@ Listener = MyStreamListener()
 print("Set Listener...")
 myStream = tweepy.Stream(auth = auth,listener=Listener)
 print("Start Stream...")
+# Set the filter
 myStream.filter(locations=[144.293405,-38.548275,145.493112,-37.505479])
 
+# Start the harvester
 print(myStream.running)
 
