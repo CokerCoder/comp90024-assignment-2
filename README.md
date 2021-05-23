@@ -6,4 +6,4 @@ Team Members:
 - Haoyuan Yu - 988290
 - Youran Zhou - 
 - Liang Min - 
-- Tianze Liu 987969
+- Tianze Liu - 987969
