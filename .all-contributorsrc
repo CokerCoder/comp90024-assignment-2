@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "yunfeijing",
+      "name": "Yunfei Jing",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18676002?v=4",
+      "profile": "https://www.linkedin.com/in/yunfeijing/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "ccc-p2",
+  "projectOwner": "yunfeijing",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
