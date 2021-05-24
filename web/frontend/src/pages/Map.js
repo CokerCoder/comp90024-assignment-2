@@ -153,7 +153,7 @@ export default function Map(prop) {
       ["Feature", "Amount"],
       ["Sport venues", sport],
       ["University", uni],
-      ["taft", taft],
+      ["TAFE", taft],
       ["School", school],
       ["Hospital", hospital],
     ]);
@@ -396,14 +396,14 @@ export default function Map(prop) {
             />
             <Legend />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Sentiment Positive">
+          <LayersControl.Overlay name="Positive Sentiment">
             <GeoJSON
               data={polygonData.features}
               style={myStyle}
               onEachFeature={onEachSubPositive}
             />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Sentiment Negative">
+          <LayersControl.Overlay name="Negative Sentiment">
             <GeoJSON
               data={polygonData.features}
               style={myStyle}
