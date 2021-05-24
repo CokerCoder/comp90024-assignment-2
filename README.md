@@ -21,7 +21,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://www.linkedin.com/in/yunfeijing/"><img src="https://avatars.githubusercontent.com/u/18676002?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yunfei Jing</b></sub></a><br /><a href="https://github.com/yunfeijing/ccc-p2/commits?author=yunfeijing" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/God-of-Study"><img src="https://avatars.githubusercontent.com/u/52060881?v=4?s=100" width="100px;" alt=""/><br /><sub><b>God-of-Study</b></sub></a><br /><a href="#data-God-of-Study" title="Data">🔣</a></td>
+    <td align="center"><a href="https://github.com/God-of-Study"><img src="https://avatars.githubusercontent.com/u/52060881?v=4?s=100" width="100px;" alt=""/><br /><sub><b>God-of-Study</b></sub></a><br /><a href="#data-God-of-Study" title="Data">🔣</a> <a href="https://github.com/yunfeijing/ccc-p2/commits?author=God-of-Study" title="Code">💻</a></td>
   </tr>
 </table>
 
