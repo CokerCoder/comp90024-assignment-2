@@ -1,3 +1,19 @@
+"""
+COMP90024-Cluster and Cloud Computing Assignment 2
+Team Group 26
+
+Yunfei Jing (987784) jinyj@student.unimelb.edu.au
+Tianze Liu (987969) tianze@student.unimelb.edu.au
+Liang Min(981061) lmmin@student.unimelb.edu.au
+Youran Zhou(991504) youran@student.unimelb.edu.au
+Haoyuan Yu (988290) haoyuany@student.unimelb.edu.au
+
+This file is used to Read Tweet data from provided Twitter Corpus and
+stored into our Couch DB
+"""
+
+
+
 import json
 import couchdb
 

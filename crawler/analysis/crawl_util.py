@@ -1,3 +1,17 @@
+"""
+COMP90024-Cluster and Cloud Computing Assignment 2
+Team Group 26
+
+Yunfei Jing (987784) jinyj@student.unimelb.edu.au
+Tianze Liu (987969) tianze@student.unimelb.edu.au
+Liang Min(981061) lmmin@student.unimelb.edu.au
+Youran Zhou(991504) youran@student.unimelb.edu.au
+Haoyuan Yu (988290) haoyuany@student.unimelb.edu.au
+
+Crawling and Couchdb Helper Functions
+"""
+
+
 import tweepy   
 import json
 import datetime
@@ -45,20 +59,5 @@ def crawl_by_loction(api,database,n = 100,):
                         "Place_coordinates":tweet["place"]["bounding_box"]['coordinates'][0]
                         })
 
-
-
-
-# Read the start and end date
-def read_and_delete_first_date():
-
-    with open('date.txt', 'r') as fin:
-        data = fin.read().splitlines(True)
-    with open('date.txt', 'w') as fout:
-        end = data[0][:-1]+" 23:59:59"
-        start = data[0][:-1]+ " 00:00:00"
-        fout.writelines(data[1:])
-        
-    fout.close()
-    return start,end
 
 

@@ -1,0 +1,61 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "yunfeijing",
+      "name": "Yunfei Jing",
+      "avatar_url": "https://avatars.githubusercontent.com/u/18676002?v=4",
+      "profile": "https://www.linkedin.com/in/yunfeijing/",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "God-of-Study",
+      "name": "God-of-Study",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52060881?v=4",
+      "profile": "https://github.com/God-of-Study",
+      "contributions": [
+        "data",
+        "code"
+      ]
+    },
+    {
+      "login": "matthewkkkk",
+      "name": "matthewkkkk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53592281?v=4",
+      "profile": "https://github.com/matthewkkkk",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "HarryHaoyuan",
+      "name": "Haoyuan Yu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61959614?v=4",
+      "profile": "https://github.com/HarryHaoyuan",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "echoid",
+      "name": "echoid",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49063360?v=4",
+      "profile": "https://github.com/echoid",
+      "contributions": [
+        "data"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "ccc-p2",
+  "projectOwner": "yunfeijing",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
