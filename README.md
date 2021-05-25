@@ -23,11 +23,13 @@
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
+------------------------
 
+# Melbourne Livability Analysis
 
 A Cloud-based application that exploits a multitude of virtual machines (VMs) across the UniMelb Research Cloud (Nectar) for harvesting tweets through the Twitter APIs. The application also include a front-end interface for visualizing our analysis and RESTFul API server for data accessing.
 
-------
+
 
 ![home](./docs/home.png)
 
