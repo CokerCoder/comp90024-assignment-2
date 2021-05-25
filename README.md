@@ -3,6 +3,27 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+## Contributors ✨
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://www.linkedin.com/in/yunfeijing/"><img src="https://avatars.githubusercontent.com/u/18676002?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yunfei Jing</b></sub></a><br /><a href="https://github.com/yunfeijing/ccc-p2/commits?author=yunfeijing" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/God-of-Study"><img src="https://avatars.githubusercontent.com/u/52060881?v=4?s=100" width="100px;" alt=""/><br /><sub><b>God-of-Study</b></sub></a><br /><a href="#data-God-of-Study" title="Data">🔣</a></td>
+    <td align="center"><a href="https://github.com/matthewkkkk"><img src="https://avatars.githubusercontent.com/u/53592281?v=4?s=100" width="100px;" alt=""/><br /><sub><b>matthewkkkk</b></sub></a><br /><a href="https://github.com/yunfeijing/ccc-p2/commits?author=matthewkkkk" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/HarryHaoyuan"><img src="https://avatars.githubusercontent.com/u/61959614?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Haoyuan Yu</b></sub></a><br /><a href="https://github.com/yunfeijing/ccc-p2/commits?author=HarryHaoyuan" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/echoid"><img src="https://avatars.githubusercontent.com/u/49063360?v=4?s=100" width="100px;" alt=""/><br /><sub><b>echoid</b></sub></a><br /><a href="#data-echoid" title="Data">🔣</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+
 
 A Cloud-based application that exploits a multitude of virtual machines (VMs) across the UniMelb Research Cloud (Nectar) for harvesting tweets through the Twitter APIs. The application also include a front-end interface for visualizing our analysis and RESTFul API server for data accessing.
 
@@ -99,24 +120,6 @@ source ./grp-26-openrc.sh
 
 ![architecture](./docs/architecture.png)
 
-## Contributors ✨
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://www.linkedin.com/in/yunfeijing/"><img src="https://avatars.githubusercontent.com/u/18676002?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yunfei Jing</b></sub></a><br /><a href="https://github.com/yunfeijing/ccc-p2/commits?author=yunfeijing" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/God-of-Study"><img src="https://avatars.githubusercontent.com/u/52060881?v=4?s=100" width="100px;" alt=""/><br /><sub><b>God-of-Study</b></sub></a><br /><a href="#data-God-of-Study" title="Data">🔣</a></td>
-    <td align="center"><a href="https://github.com/matthewkkkk"><img src="https://avatars.githubusercontent.com/u/53592281?v=4?s=100" width="100px;" alt=""/><br /><sub><b>matthewkkkk</b></sub></a><br /><a href="https://github.com/yunfeijing/ccc-p2/commits?author=matthewkkkk" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/HarryHaoyuan"><img src="https://avatars.githubusercontent.com/u/61959614?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Haoyuan Yu</b></sub></a><br /><a href="https://github.com/yunfeijing/ccc-p2/commits?author=HarryHaoyuan" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/echoid"><img src="https://avatars.githubusercontent.com/u/49063360?v=4?s=100" width="100px;" alt=""/><br /><sub><b>echoid</b></sub></a><br /><a href="#data-echoid" title="Data">🔣</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
