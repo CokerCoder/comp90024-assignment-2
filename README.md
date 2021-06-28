@@ -37,8 +37,6 @@ A Cloud-based application that exploits a multitude of virtual machines (VMs) ac
 
 ### Project Demonstration Video
 
-- 
-
 - Front-end Demo: https://www.youtube.com/watch?v=6bAEZ-dkEjM
 
 - Presentation Slides: https://drive.google.com/file/d/1WXzDEVSrPxTZf1zl7YZ3ENYoYUbZItCA/view?usp=sharing  
